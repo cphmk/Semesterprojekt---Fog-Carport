@@ -1,0 +1,83 @@
+.main {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    max-width: 1000px;
+    align-self: center;
+}
+
+.forms-box {
+    border: 2px solid #013d7a;
+    background-color: white;
+    display: flex;
+    justify-items: center;
+    flex-direction: column;
+    align-content: center;
+    padding: 100px;
+    gap: 30px;
+}
+
+.forms-text {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.forms {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.form-box label {
+    font-weight: bold;
+    font-size: 1.1rem;
+    padding-bottom: 10px;
+}
+
+.form-box select {
+    font-weight: lighter;
+    font-size: 0.9rem;
+    padding: 5px;
+}
+
+.form-box textarea {
+    resize: none;
+    height: 150px;
+}
+
+.button-forms {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.button-forms button {
+    padding: 15px 45px 15px 45px;
+    border-radius: 5px;
+    font-size: 1.5rem;
+}
+
+.box-buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.box-buttons button {
+    padding: 10px 30px 10px 30px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    width: 45%;
+}
+

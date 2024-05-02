@@ -1,0 +1,27 @@
+/* General */
+
+* {
+    font-family: 'Sansation', sans-serif;
+}
+
+body {
+    background-color: #E7E6E3;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.button-design {
+    background-color: #013d7a;
+    color: #FFFFFF;
+    text-align: center;
+    border-left-width: 0px;
+    border-right-width: 0px;
+    border-bottom-width: 0px;
+    border-top-width: 0px;
+    cursor: pointer;
+}
+
+.button-design:hover {
+    background-color: #0357AC;
+}

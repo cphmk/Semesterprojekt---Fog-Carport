@@ -2,6 +2,7 @@ package app;
 
 import app.config.SessionConfig;
 import app.config.ThymeleafConfig;
+import app.controllers.QuickBygController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
@@ -27,6 +28,7 @@ public class Main {
 
         // Routing
 
-        app.get("/", ctx ->  ctx.render("index.html"));
+        app.get("/", ctx ->  ctx.render("QuickBygFrontpage.html"));
+        QuickBygController.addRoutes(app,connectionPool);
     }
 }
