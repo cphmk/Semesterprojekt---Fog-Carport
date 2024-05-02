@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Carport</title>
+    <link href="../public/css/buypage.css" th:href="@{/css/buypage.css}" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div id="page">
+
+
+    <nav>
+        <div id="left-nav">
+            <a href="CUSTOMER SITE">Fog Bruger</a>
+            <a href="/templates/login.html">Sign in</a>
+            <a href="/templates/signup.html">Create user</a>
+        </div>
+    </nav>
+
+    <div id="content">
+
+        <div class="text">
+
+            <div id="intro-text">
+                <h1>Carporte</h1>
+            </div>
+        </div>
+
+        <form method="post" action="/addOrderline">
+            <div id="dropdowns">
+                <select name="kategori" id="kategori">
+                    <option>Kategori</option>
+                    <option value="1">Enkelt carporte</option>
+                    <option value="2">Dobbelt carporte</option>
+                </select>
+
+                <select name="tag" id="tag">
+                    <option>Tag</option>
+                    <option value="1">Fladt tag</option>
+                    <option value="2">Høj rejsning</option>
+                </select>
+
+
+                <label for="prisFra">Pris:</label>
+                <input type="number" id="prisFra" name="prisFra" placeholder="0" min="0">
+
+                <label for="prisTil">-</label>
+                <input type="number" id="prisTil" name="prisTil" placeholder="50000" max="50000">
+
+                <select name="længde" id="længde">
+                    <option> Længde (cm)</option>
+                    <option value="1">480</option>
+                    <option value="2">540</option>
+                    <option value="3">600</option>
+                    <option value="4">720</option>
+                    <option value="5">780</option>
+                    <option value="6">810</option>
+                    <option value="7">870</option>
+                    <option value="8">910</option>
+                    <option value="9">990</option>
+                </select>
+
+
+                <select name="bredde" id="bredde">
+                    <option> Bredde (cm)</option>
+                    <option value="1">300</option>
+                    <option value="2">360</option>
+                    <option value="3">390</option>
+                    <option value="4">600</option>
+
+                </select>
+
+                <form id="search">
+                    <input type="text" id="searchInput" name="search" placeholder="Søg...">
+                    <button type="submit">Søg</button>
+                </form>
+            </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <!-- card -->
+    <div class="card">
+        <img src="../public/images/carporteksempel.jpg" alt="" class="card_img">
+        <h1 class="card_title">Billede 1</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+    <div class="card">
+        <img src="billede" alt="" class="card_img">
+        <h1 class="card_title">Billede 2</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+    <div class="card">
+        <img src="billede" alt="" class="card_img">
+        <h1 class="card_title">Billede 3</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+    <div class="card">
+        <img src="billede" alt="" class="card_img">
+        <h1 class="card_title">Billede 4</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+    <div class="card">
+        <img src="billede" alt="" class="card_img">
+        <h1 class="card_title">Billede 5</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+    <div class="card">
+        <img src="billede" alt="" class="card_img">
+        <h1 class="card_title">Billede 6</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+    <div class="card">
+        <img src="billede" alt="" class="card_img">
+        <h1 class="card_title">Billede 7</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+    <div class="card">
+        <img src="billede" alt="" class="card_img">
+        <h1 class="card_title">Billede 8</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+    <div class="card">
+        <img src="billede" alt="" class="card_img">
+        <h1 class="card_title">Billede 9</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+    <div class="card">
+        <img src="billede" alt="" class="card_img">
+        <h1 class="card_title">Billede 10</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+    <div class="card">
+        <img src="billede" alt="" class="card_img">
+        <h1 class="card_title">Billede 11</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+    <div class="card">
+        <img src="billede" alt="" class="card_img">
+        <h1 class="card_title">Billede 12</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+    <div class="card">
+        <img src="billede" alt="" class="card_img">
+        <h1 class="card_title">Billede 13</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+    <div class="card">
+        <img src="billede" alt="" class="card_img">
+        <h1 class="card_title">Billede 14</h1>
+        <h2 class="card_price">
+            <div class="card_price-item">Pris:</div>
+            <div class="card_price-item">9999kr.</div>
+        </h2>
+        <a href="#" class="card_btn">Køb</a>
+    </div>
+    <!-- card -->
+</div>
+</body>
+</html>
