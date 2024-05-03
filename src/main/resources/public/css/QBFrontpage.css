@@ -1,0 +1,25 @@
+#background-image {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    display: grid;
+    gap: 5px;
+    aspect-ratio: 3.5 / 1;
+    object-fit: cover;
+}
+.button-box {
+    display: flex;
+    justify-content: center;
+}
+
+.button-box button {
+    padding: 50px;
+    font-size: 1.2rem;
+    margin: 10px 50px 10px 50px;
+}
+
+/* Footer */
+
+.footer {
+
+}
