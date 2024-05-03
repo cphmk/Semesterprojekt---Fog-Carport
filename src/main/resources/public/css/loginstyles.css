@@ -1,3 +1,4 @@
+/* General styles */
 body {
     display: flex;
     justify-content: center;
@@ -10,14 +11,20 @@ body {
 }
 
 .logo-container {
-    position: absolute;
-    top: 20px;
-    left: 20px;
+    max-width: 100%;
+    padding: 10px; /* Add padding around the logo image */
 }
+
+.logo-container img {
+
+    max-width: 100%; /* Ensure the image does not exceed its container width */
+}
+
 
 .flex-MainContainer {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column; /* Stack elements vertically on smaller screens */
+    justify-content: center;
     align-items: center;
     width: 80%;
 }
@@ -27,19 +34,22 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    width: 30%;
+    width: 30%; /* Make the flex boxes full width on smaller screens */
     border-radius: 5px;
     padding: 20px;
+    margin-bottom: 20px; /* Add some space between the flex boxes */
 }
 
 .flex-box img, .flex-box2 img, .flex-box3 img {
     max-width: 100%;
     max-height: 100%;
+    border-radius: 5px; /* Apply border radius to images */
 }
 
 .flex-box input {
     margin: 4px 0;
-    width: 400px;
+    width: 90%; /* Make the input fields 90% of the container width */
+    max-width: 400px; /* Set a maximum width for the input fields */
     height: 40px;
     border-radius: 5px;
 }
@@ -55,8 +65,7 @@ body {
 }
 
 .flex-box2 img, .flex-box3 img {
-   border-radius: 50%;
-
+    border-radius: 50%;
 }
 
 .flex-box form {
@@ -66,22 +75,22 @@ body {
 
 .flex-box .button-group {
     display: flex;
-    margin-right: auto;
-    justify-content: space-between;/* Place buttons at each end */
+    justify-content: space-between; /* Place buttons at each end */
+    width: 100%; /* Make the button group full width */
 }
 
 .flex-box button {
-    margin: 10px;
-    width: 100px;
+    width: 48%; /* Set width to ensure both buttons fit */
     height: 50px;
-    font-size: 30px;
+    font-size: 12px; /* Decrease font size for buttons */
 }
-
 
 .flex-box button:hover {
-  background-color: lightgrey;
-  color: blue;
+    background-color: lightgrey;
+    color: blue;
 }
+
+
 
 
 
