@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QuickByg | Forside</title>
+    <link href="../public/css/QBFrontpage.css" th:href="@{/css/QBFrontpage.css}" rel="stylesheet"/>
+    <link href="../public/css/QuickByg.css" th:href="@{/css/QuickByg.css}" rel="stylesheet"/>
+    <link href="../public/css/header.css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link href="../public/css/FogStyles.css" th:href="@{/css/FogStyles.css}" rel="stylesheet"/>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.cdnfonts.com/css/sansation" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/public/images/Foglogo.png" th:href="@{/images/Foglogo.png}">
+</head>
+<body>
+
+<div class="header">
+    <div class="left-div">
+        <div class="logo">
+            <form>
+                <button class="logo-click" formaction="/">
+                    <img src="../public/images/Foglogo.png" th:src="@{/images/Foglogo.png}">
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="right-div">
+        <form method="get">
+            <div class="account">
+                <button class="account-click" formaction="login">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 25 25">
+                        <path fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M12.5 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM5 20v-1a4 4 0 0 1 4-4h7a4 4 0 0 1 4 4v1h0">
+                        </path>
+                    </svg>
+                    <span>Fog Konto</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="main">
+    <img id="background-image" src="../public/images/CarportImage.jpg" th:src="@{/images/CarportImage.jpg}">
+    <div class="text-box">
+        <h1>Lad os tegne din carport drøm - bestil et Quick-Byg tilbud</h1>
+        <h3>Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen
+            og udskrive en skitsetegning på en carport indenfor vores standardprogram.
+            Tilbud og skitsetegning fremsendes på mail hurtigst muligt.
+            Ved bestilling medfølger standardbyggevejledning.</h3>
+        <h3>Vælg nedenfor, om du ønsker tilbud på carport med fladt tag eller carport med højt tag.</h3>
+    </div>
+    <div class="button-box">
+        <form method="get">
+            <button class="button-design" formaction="QuickByg/FladtTag">
+                Carport med fladt tag
+            </button>
+            <button type="submit" class="button-design" formaction="QuickByg/HoejtTag">
+                Carport med højt tag
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<div class="footer"></div>
+
+
+</body>
+</html>
