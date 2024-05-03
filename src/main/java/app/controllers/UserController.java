@@ -54,7 +54,7 @@ public class UserController {
             if (user.getRole()) {
                 ctx.render("admin.html");
             } else
-                ctx.render("bruger.html");
+                ctx.render("QuickBygFrontpage.html");
             } catch(DatabaseException e){
                 // Hvis nej, send tilbage til login side med fejl besked
                 if (e.getMessage().equals("DB fejl")) {
