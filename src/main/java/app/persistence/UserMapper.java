@@ -3,10 +3,8 @@ package app.persistence;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class UserMapper {
     public static User login(String username, String password, ConnectionPool connectionPool) throws DatabaseException {
@@ -54,5 +52,26 @@ public class UserMapper {
             }
             throw new DatabaseException(msg, e.getMessage());
         }
+    }
+
+    public static ArrayList<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
+        ArrayList<User> user = new ArrayList<>();
+        String sql = "select * from users WHERE admin=false";
+        try {
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int user_id = rs.getInt("user_id");
+                String username = rs.getString("username");
+                int phone_number = rs.getInt("phone_number");
+                String email = rs.getString("email");
+                user.add(new User(user_id, username, phone_number, email));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
     }
 }
