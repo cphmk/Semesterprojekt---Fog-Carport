@@ -33,14 +33,14 @@ public class UserMapper {
         }
     }
 
-    public static void createuser(String userName, String password, ConnectionPool connectionPool) throws DatabaseException {
+    public static void createuser(String username, String password, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "insert into users (username, password) values (?,?)";
 
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
         ) {
-            ps.setString(1, userName);
+            ps.setString(1, username);
             ps.setString(2, password);
 
             int rowsAffected = ps.executeUpdate();
