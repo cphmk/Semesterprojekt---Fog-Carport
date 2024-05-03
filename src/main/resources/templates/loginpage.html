@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CarportProjekt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/css/loginstyles.css" th:href="@{/css/loginstyles.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="logo-container">
+    <img src="../public/images/foglogo.png" alt="Logo">
+</div>
+<div class="flex-MainContainer">
+    <div class="flex-box3">
+        <img src="../public/images/byg-selv-carporte.jpg" alt="">
+    </div>
+    <div class="flex-box">
+        <h1>Log in page</h1>
+        <form method="post">
+            <div>
+                <label for="Username">Username</label>
+                <input type="text" name="username" id="Username" placeholder="Enter your username">
+            </div>
+            <div>
+                <label for="Password">Password</label>
+                <input type="password" name="password" id="Password" placeholder="Enter your password">
+            </div>
+            <div class="button-group">
+                <button type="submit" name="Login" formaction="login">Login</button>
+                <button type="submit" name="Signup" formaction="signup">Signup</button>
+            </div>
+        </form>
+    </div>
+    <div class="flex-box2">
+        <img src="../public/images/kontorarbejder.jpg" alt="">
+    </div>
+</div>
+</body>
+</html>
+
+
+
+

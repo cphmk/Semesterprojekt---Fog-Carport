@@ -2,6 +2,8 @@ package app;
 
 import app.config.SessionConfig;
 import app.config.ThymeleafConfig;
+import app.controllers.AdminController;
+import app.controllers.UserController;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
@@ -9,7 +11,7 @@ import io.javalin.rendering.template.JavalinThymeleaf;
 public class Main {
 
     private static final String USER = "postgres";
-    private static final String PASSWORD = "postgres";
+    private static final String PASSWORD = "postgrespostgres";
     private static final String URL = "jdbc:postgresql://localhost:5432/%s?currentSchema=public";
     private static final String DB = "fogprojekt";
 
@@ -25,10 +27,8 @@ public class Main {
         }).start(7070);
 
         // Routing
-
-        app.get("/", ctx -> ctx.render("signup.html"));
-
-
+        app.get("/", ctx -> ctx.render("loginpage.html"));
+        UserController.addRoutes(app, connectionPool);
 
     }
 }
