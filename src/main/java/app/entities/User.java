@@ -5,14 +5,13 @@ public class User {
     private String username;
     private String password;
     private boolean role;
-    private int balance;
 
-    public User(int userId, String userName, String password, boolean role, int balance) {
+    public User(int userId, String userName, String password, boolean role) {
         this.userId = userId;
         this.username = userName;
         this.password = password;
         this.role = role;
-        this.balance = balance;
+
     }
 
     public int getUserId() {
@@ -31,9 +30,6 @@ public class User {
         return role;
     }
 
-    public int getBalance() {
-        return balance;
-    }
 
     @Override
     public String toString() {
