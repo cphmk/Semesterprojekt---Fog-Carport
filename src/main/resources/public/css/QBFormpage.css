@@ -17,6 +17,7 @@
     align-content: center;
     padding: 100px;
     gap: 30px;
+    max-width: 500px;
 }
 
 .forms-text {
@@ -54,6 +55,11 @@
 .form-box textarea {
     resize: none;
     height: 150px;
+    font-weight: lighter;
+}
+
+.form-box input {
+    font-weight: lighter;
 }
 
 .button-forms {

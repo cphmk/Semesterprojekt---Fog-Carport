@@ -9,11 +9,21 @@ public class QuickBygController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.get("QuickByg", ctx -> ctx.render("QuickBygFrontpage.html"));
         app.get("QuickByg/FladtTag", ctx -> ctx.render("QuickBygFladtTag.html"));
-        app.get("QuickByg/HoejtTag", ctx -> ctx.render("QuickBygHoejtTag.html"));
-        app.get("QuickByg/Oplysninger", ctx -> contact(ctx));
+        app.get("QuickByg/HoejtTag", ctx -> ctx.render("QuickBygOplysninger.html"));
+        app.post("/QuickByg/Oplysninger", ctx -> contact(ctx));
     }
 
     private static void contact(Context ctx) {
-        ctx.render("QuickBygOplysninger.html");
+
+        int carportWidth = Integer.parseInt(ctx.formParam("carport_bredde"));
+        int carportLength = Integer.parseInt(ctx.formParam("carport_længde"));
+        String tagplader = ctx.formParam("carport_tag");
+
+        int redskabsrumWidth = Integer.parseInt(ctx.formParam("redskabs_bredde"));
+        int redskabsrumLength = Integer.parseInt(ctx.formParam("redskabs_længde"));
+
+        String kommentar = ctx.formParam("kommentar");
+
+        ctx.render("QuickBygHoejtTag.html");
     }
 }

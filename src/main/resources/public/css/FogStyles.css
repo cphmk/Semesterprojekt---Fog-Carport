@@ -20,6 +20,7 @@ body {
     border-bottom-width: 0px;
     border-top-width: 0px;
     cursor: pointer;
+    font-weight: lighter;
 }
 
 .button-design:hover {

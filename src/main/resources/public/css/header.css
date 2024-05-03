@@ -11,6 +11,11 @@
     padding: 10px;
 }
 
+.logo img {
+    width: 50px;
+    height: 50px;
+}
+
 .logo-click {
     background-color: transparent;
     border: 0;
@@ -24,14 +29,39 @@
     justify-content: space-between;
 }
 
-.account {
+.search {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.search button {
+    background-color: #013d7a;
+    border: none;
+}
+
+.search-field input {
+    height: 30px;
+    border: none;
+}
+
+.account {
+    padding: 10px;
+}
+
+.account button {
+    display: flex;
+    align-items: center;
     flex-direction: column;
-    justify-items: center;
 }
 
 .account-click {
     background-color: transparent;
     border: 0px;
     cursor: pointer;
+}
+
+.account span {
+    font-size: 1rem;
 }
