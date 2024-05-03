@@ -11,7 +11,7 @@ import io.javalin.http.Context;
 public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("login", ctx -> login(ctx, connectionPool));
-        app.get("login", ctx -> ctx.render("login.html"));
+        app.get("login", ctx -> ctx.render("loginpage.html"));
         app.get("logout", ctx -> logout(ctx));
         app.get("signup", ctx -> ctx.render("signup.html"));
         app.post("signup", ctx -> signup(ctx, connectionPool));
@@ -51,17 +51,20 @@ public class UserController {
         try {
             User user = UserMapper.login(username, password, connectionPool);
             ctx.sessionAttribute("currentUser", user);
-            // Hvis ja, send videre til forsiden med login besked
-            ctx.render("buypage.html");
-        } catch (DatabaseException e) {
-            // Hvis nej, send tilbage til login side med fejl besked
-            if (e.getMessage().equals("DB fejl")) {
-                ctx.attribute("message", "Can't connect to db");
+            if (user.getRole()) {
+                ctx.render("admin.html");
+            } else
+                ctx.render("bruger.html");
+            } catch(DatabaseException e){
+                // Hvis nej, send tilbage til login side med fejl besked
+                if (e.getMessage().equals("DB fejl")) {
+                    ctx.attribute("message", "Can't connect to db");
+                }
+                if (e.getMessage().equals("Fejl i login. Prøv igen")) {
+                    ctx.attribute("message", "Wrong username or password");
+                }
+                ctx.render("loginpage.html");
             }
-            if (e.getMessage().equals("Fejl i login. Prøv igen")) {
-                ctx.attribute("message", "Wrong username or password");
-            }
-            ctx.render("login.html");
-        }
+
     }
 }

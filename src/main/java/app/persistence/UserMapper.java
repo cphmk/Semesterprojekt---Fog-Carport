@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserMapper {
-
     public static User login(String username, String password, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "select * from users where username=? and password=?";
 
@@ -24,9 +23,8 @@ public class UserMapper {
             if (rs.next()) {
                 int user_id = rs.getInt("user_id");
                 boolean role = rs.getBoolean("admin");
-                int balance = rs.getInt("balance");
                 System.out.println("Sign in success");
-                return new User(user_id, username, password, role, balance);
+                return new User(user_id, username, password, role);
             } else {
                 throw new DatabaseException("Fejl i login. Prøv igen");
             }
