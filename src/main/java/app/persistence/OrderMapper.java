@@ -23,9 +23,10 @@ public class OrderMapper {
                 Date date = rs.getDate("date");
                 String status = rs.getString("status");
                 int user_id = rs.getInt("user_id");
-                int order_item_id = rs.getInt("order_item_id");
+                String comment = rs.getString("comment");
+                int carport_id = rs.getInt("carport_id");
 
-                orders.add(new Order(order_id, date, status, user_id, order_item_id));
+                orders.add(new Order(order_id, date, status, user_id, comment, carport_id));
             }
 
         } catch (SQLException e) {

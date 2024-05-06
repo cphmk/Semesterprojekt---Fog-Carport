@@ -67,7 +67,8 @@ public class UserMapper {
                 String username = rs.getString("username");
                 int phone_number = rs.getInt("phone_number");
                 String email = rs.getString("email");
-                user.add(new User(user_id, username, phone_number, email));
+                String address = rs.getString("address");
+                user.add(new User(user_id, username, phone_number, email, address));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

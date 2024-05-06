@@ -52,7 +52,7 @@ public class UserController {
             User user = UserMapper.login(username, password, connectionPool);
             ctx.sessionAttribute("currentUser", user);
             if (user.getRole()) {
-                ctx.render("adminOrders.html");
+                ctx.redirect("adminView");
             } else
                 ctx.render("QuickBygFrontpage.html");
             } catch(DatabaseException e){

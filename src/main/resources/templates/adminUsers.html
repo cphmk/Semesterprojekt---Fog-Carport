@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="../public/css/adminUsers.css" th:href="@{/css/adminUsers.css}" rel="stylesheet"/>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../public/css/adminUsers.css" th:href="@{/css/adminUsers.css}" rel="stylesheet"/>
     <title>Admin Users</title>
     <link rel="icon" type="image/x-icon" href="/public/images/foglogo.png" th:href="@{/images/foglogo.png}">
 </head>
@@ -23,7 +22,7 @@
 <label for="sidebar-toggle" class="toggle-btn">&#9776; Toggle Sidebar</label>
 <div class="order-box">
     <form method="post">
-        <h2 class="text">Order list</h2>
+        <h2 class="text">User list</h2>
         <table>
             <thead>
             <tr>
@@ -31,14 +30,16 @@
                 <th> Username</th>
                 <th> Phone number</th>
                 <th> Email</th>
-
+                <th> Address</th>
             </tr>
             </thead>
+
             <tr th:each="user : ${session.users}">
-                <td><span th:text="${user.user_id}"> User ID </span></td>
-                <td><span th:text="${user.username}"> Username </span></td>
-                <td><span th:text="${user.phone_number}"> Phone number </span></td>
-                <td><span th:text="${user.email}"> Email </span></td>
+                <td><span th:text="${user.user_id == 0 ? 'User ID' : user.user_id}"> User ID </span></td>
+                <td><span th:text="${user.username == null ? 'Username' : user.username}"> Username </span></td>
+                <td><span th:text="${user.phone_number == 0 ? 'Phone number' : user.phone_number}">Phone number</span></td>
+                <td><span th:text="${user.email == null ? 'Email' : user.email}"> Email </span></td>
+                <td><span th:text="${user.address == null ? 'Address' : user.address}"> Address </span></td>
             </tr>
         </table>
     </form>
