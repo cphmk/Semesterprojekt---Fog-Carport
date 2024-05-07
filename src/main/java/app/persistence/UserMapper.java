@@ -22,9 +22,8 @@ public class UserMapper {
             if (rs.next()) {
                 int user_id = rs.getInt("user_id");
                 boolean role = rs.getBoolean("admin");
-                String address = String.valueOf(rs.getInt("address"));
                 System.out.println("Sign in success");
-                return new User(user_id, username, password, role, address);
+                return new User(user_id, username, password, role);
             } else {
                 throw new DatabaseException("Fejl i login. Prøv igen");
             }
@@ -66,12 +65,12 @@ public class UserMapper {
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(contactSQL)
         ) {
-            ps.setString(1,user.getContactInformation().getName());
-            ps.setString(2,user.getContactInformation().getAddress());
-            ps.setString(3,user.getContactInformation().getCity());
-            ps.setInt(4,user.getContactInformation().getPostal_code());
-            ps.setInt(5,user.getContactInformation().getPhone_number());
-            ps.setString(6,user.getContactInformation().getName());
+            ps.setString(1, user.getContactInformation().getName());
+            ps.setString(2, user.getContactInformation().getAddress());
+            ps.setString(3, user.getContactInformation().getCity());
+            ps.setInt(4, user.getContactInformation().getPostal_code());
+            ps.setInt(5, user.getContactInformation().getPhone_number());
+            ps.setString(6, user.getContactInformation().getName());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
@@ -84,10 +83,11 @@ public class UserMapper {
             }
             throw new DatabaseException(msg, e.getMessage());
         }
-      
+    }
+
     public static ArrayList<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
         ArrayList<User> user = new ArrayList<>();
-        String sql = "select * from users WHERE admin=false";
+        String sql = "SELECT * FROM users INNER JOIN contact ON users.user_id = contact.user_id WHERE users.admin = false";
         try {
             Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -96,7 +96,16 @@ public class UserMapper {
             while (rs.next()) {
                 int user_id = rs.getInt("user_id");
                 String username = rs.getString("username");
-                user.add(new User(user_id, username));
+
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String city = rs.getString("city");
+                int postal_code = rs.getInt("postal_code");
+                int phone_number = rs.getInt("phone_number");
+                String email = rs.getString("email");
+
+                ContactInformation contactInformation = new ContactInformation(name,address,postal_code,city,phone_number,email);
+                user.add(new User(user_id, username, contactInformation));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
