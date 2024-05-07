@@ -5,13 +5,13 @@ public class User {
     private String username;
     private String password;
     private boolean role;
+    private ContactInformation contactInformation;
 
     public User(int userId, String userName, String password, boolean role) {
         this.userId = userId;
         this.username = userName;
         this.password = password;
         this.role = role;
-
     }
 
     public int getUserId() {
@@ -30,6 +30,13 @@ public class User {
         return role;
     }
 
+    public ContactInformation getContactInformation() {
+        return contactInformation;
+    }
+
+    public void setContactInformation(ContactInformation contactInformation) {
+        this.contactInformation = contactInformation;
+    }
 
     @Override
     public String toString() {
