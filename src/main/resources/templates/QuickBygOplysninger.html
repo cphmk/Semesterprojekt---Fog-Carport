@@ -55,31 +55,31 @@
             <div class="forms">
                 <div class="form-box">
                     <label for="navn">Navn*</label>
-                    <input type="text" name="navn" id="navn">
+                    <input th:value="${name}" type="text" name="navn" id="navn">
                 </div>
                 <div class="form-box">
                     <label for="adresse">Adresse*</label>
-                    <input type="text" name="adresse" id="adresse">
+                    <input th:value="${address}" type="text" name="adresse" id="adresse">
                 </div>
                 <div class="form-box">
                     <label for="postnummer">Postnummer*</label>
-                    <input type="text" name="postnummer" id="postnummer">
+                    <input th:value="${postal_code}" type="text" name="postnummer" id="postnummer">
                 </div>
                 <div class="form-box">
                     <label for="by">By*</label>
-                    <input type="text" name="by" id="by">
+                    <input th:value="${city}" type="text" name="by" id="by">
                 </div>
                 <div class="form-box">
                     <label for="telefon">Telefon*</label>
-                    <input type="text" name="telefon" id="telefon">
+                    <input th:value="${phone_number}" type="text" name="telefon" id="telefon">
                 </div>
                 <div class="form-box">
                     <label for="email">Email*</label>
-                    <input type="text" name="email" id="email">
+                    <input th:value="${email}" type="text" name="email" id="email">
                 </div>
             </div>
             <div class="button-forms">
-                <button class="button-design" formaction="/Bestil">Bestil tilbud</button>
+                <button class="button-design" formaction="Bestil">Bestil tilbud</button>
             </div>
         </div>
     </form>

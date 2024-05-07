@@ -1,6 +1,8 @@
 package app.persistence;
 
+import app.entities.CarportDesign;
 import app.entities.Order;
+import app.entities.User;
 import app.exceptions.DatabaseException;
 
 import java.sql.*;
@@ -42,6 +44,28 @@ public class OrderMapper {
             Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, orderID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl i opdatering af en task");
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException("DB fejl", e.getMessage());
+        }
+    }
+
+    public static void addOrder(CarportDesign carportDesign, int user_id, int carport_id, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "INSERT INTO orders (status, date, user_id, comment, carport_id) VALUES (?,?,?,?,?)";
+
+        try {
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setString(1, "Pending");
+            ps.setDate(2, Date.valueOf(LocalDate.now()));
+            ps.setInt(3, user_id);
+            ps.setString(4, carportDesign.getComment());
+            ps.setInt(5, carport_id);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
