@@ -5,12 +5,13 @@ public class User {
     private String username;
     private String password;
     private boolean role;
-
-    public User(int userId, String userName, String password, boolean role) {
+    private String address;
+    public User(int userId, String userName, String password, boolean role, String address) {
         this.userId = userId;
         this.username = userName;
         this.password = password;
         this.role = role;
+        this.address = address;
 
     }
 
@@ -30,7 +31,9 @@ public class User {
         return role;
     }
 
-
+    public String getAddress() {
+       return address;
+    }
     @Override
     public String toString() {
         return "User{" +
@@ -38,6 +41,7 @@ public class User {
                 ", userName='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", address='" + address + '\'' +
                 '}';
     }
 }

@@ -23,8 +23,9 @@ public class UserMapper {
             if (rs.next()) {
                 int user_id = rs.getInt("user_id");
                 boolean role = rs.getBoolean("admin");
+                String address = String.valueOf(rs.getInt("address"));
                 System.out.println("Sign in success");
-                return new User(user_id, username, password, role);
+                return new User(user_id, username, password, role, address);
             } else {
                 throw new DatabaseException("Fejl i login. Prøv igen");
             }
@@ -33,8 +34,8 @@ public class UserMapper {
         }
     }
 
-    public static void createuser(String username, String password, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into users (username, password) values (?,?)";
+    public static void createuser(String username, String password, String address, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "insert into users (username, password, address) values (?,?,?)";
 
         try (
                 Connection connection = connectionPool.getConnection();
@@ -42,6 +43,7 @@ public class UserMapper {
         ) {
             ps.setString(1, username);
             ps.setString(2, password);
+            ps.setString(3, address);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
