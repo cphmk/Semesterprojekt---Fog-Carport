@@ -26,10 +26,11 @@ public class UserController {
         String username = ctx.formParam("username");
         String password = ctx.formParam("password");
         String cpassword = ctx.formParam("cpassword");
+        String address = ctx.formParam("address");
 
         if (cpassword.equals(password)) {
             try {
-                UserMapper.createuser(username, password, connectionPool);
+                UserMapper.createuser(username, password, address, connectionPool);
                 ctx.redirect("login");
             } catch (DatabaseException e) {
                 ctx.attribute("message", "Username already exists");

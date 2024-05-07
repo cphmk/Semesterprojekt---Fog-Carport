@@ -9,6 +9,7 @@ public class User {
     private boolean role;
     private String address;
 
+
     public User(int user_id, String username, String password, boolean role) {
         this.user_id = user_id;
         this.username = username;
@@ -48,7 +49,9 @@ public class User {
         return role;
     }
 
-
+    public String getAddress() {
+       return address;
+    }
     @Override
     public String toString() {
         return "User{" +
@@ -56,6 +59,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", role='" + role + '\'' +
+                ", address='" + address + '\'' +
                 '}';
     }
 }
