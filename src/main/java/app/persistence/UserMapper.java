@@ -1,5 +1,6 @@
 package app.persistence;
 
+import app.entities.ContactInformation;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 
@@ -56,6 +57,34 @@ public class UserMapper {
         }
     }
 
+
+    public static void insertContactInformation(ContactInformation contactInformation, User user, ConnectionPool connectionPool) throws DatabaseException {
+        //Insert into contact table with information
+        String contactSQL = "INSERT INTO contact (name,address,city,postal_code,phone_number,email) VALUES (?,?,?,?,?,?) WHERE user_id = ?";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(contactSQL)
+        ) {
+            ps.setString(1,user.getContactInformation().getName());
+            ps.setString(2,user.getContactInformation().getAddress());
+            ps.setString(3,user.getContactInformation().getCity());
+            ps.setInt(4,user.getContactInformation().getPostal_code());
+            ps.setInt(5,user.getContactInformation().getPhone_number());
+            ps.setString(6,user.getContactInformation().getName());
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl ved oprettelse af ny kontakt information");
+            }
+        } catch (SQLException e) {
+            String msg = "Der er sket en fejl. Prøv igen";
+            if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
+                msg = "Kontaktinformationen findes allerede.";
+            }
+            throw new DatabaseException(msg, e.getMessage());
+        }
+      
     public static ArrayList<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
         ArrayList<User> user = new ArrayList<>();
         String sql = "select * from users WHERE admin=false";
@@ -67,10 +96,7 @@ public class UserMapper {
             while (rs.next()) {
                 int user_id = rs.getInt("user_id");
                 String username = rs.getString("username");
-                int phone_number = rs.getInt("phone_number");
-                String email = rs.getString("email");
-                String address = rs.getString("address");
-                user.add(new User(user_id, username, phone_number, email, address));
+                user.add(new User(user_id, username));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
