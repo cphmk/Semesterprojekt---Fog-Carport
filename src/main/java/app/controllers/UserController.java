@@ -26,10 +26,11 @@ public class UserController {
         String username = ctx.formParam("username");
         String password = ctx.formParam("password");
         String cpassword = ctx.formParam("cpassword");
+        String address = ctx.formParam("address");
 
         if (cpassword.equals(password)) {
             try {
-                UserMapper.createuser(username, password, connectionPool);
+                UserMapper.createuser(username, password, address, connectionPool);
                 ctx.redirect("login");
             } catch (DatabaseException e) {
                 ctx.attribute("message", "Username already exists");
@@ -52,9 +53,9 @@ public class UserController {
             User user = UserMapper.login(username, password, connectionPool);
             ctx.sessionAttribute("currentUser", user);
             if (user.getRole()) {
-                ctx.render("admin.html");
+                ctx.redirect("adminView");
             } else
-                ctx.render("bruger.html");
+                ctx.render("QuickBygFrontpage.html");
             } catch(DatabaseException e){
                 // Hvis nej, send tilbage til login side med fejl besked
                 if (e.getMessage().equals("DB fejl")) {

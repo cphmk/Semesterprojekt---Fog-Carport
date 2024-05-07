@@ -4,10 +4,8 @@ import app.entities.ContactInformation;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 
 public class UserMapper {
     public static User login(String username, String password, ConnectionPool connectionPool) throws DatabaseException {
@@ -24,8 +22,9 @@ public class UserMapper {
             if (rs.next()) {
                 int user_id = rs.getInt("user_id");
                 boolean role = rs.getBoolean("admin");
+                String address = String.valueOf(rs.getInt("address"));
                 System.out.println("Sign in success");
-                return new User(user_id, username, password, role);
+                return new User(user_id, username, password, role, address);
             } else {
                 throw new DatabaseException("Fejl i login. Prøv igen");
             }
@@ -34,15 +33,16 @@ public class UserMapper {
         }
     }
 
-    public static void createuser(String userName, String password, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into users (username, password) values (?,?)";
+    public static void createuser(String username, String password, String address, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "insert into users (username, password, address) values (?,?,?)";
 
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
         ) {
-            ps.setString(1, userName);
+            ps.setString(1, username);
             ps.setString(2, password);
+            ps.setString(3, address);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
@@ -56,6 +56,7 @@ public class UserMapper {
             throw new DatabaseException(msg, e.getMessage());
         }
     }
+
 
     public static void insertContactInformation(ContactInformation contactInformation, User user, ConnectionPool connectionPool) throws DatabaseException {
         //Insert into contact table with information
@@ -83,5 +84,23 @@ public class UserMapper {
             }
             throw new DatabaseException(msg, e.getMessage());
         }
+      
+    public static ArrayList<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
+        ArrayList<User> user = new ArrayList<>();
+        String sql = "select * from users WHERE admin=false";
+        try {
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int user_id = rs.getInt("user_id");
+                String username = rs.getString("username");
+                user.add(new User(user_id, username));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
     }
 }

@@ -19,6 +19,7 @@ public class QuickBygController {
         app.post("/QuickByg/Carport", ctx -> saveCarport(ctx));
         app.post("/QuickByg/Oplysninger", ctx -> Oplysninger(ctx, connectionPool));
         app.post("/QuickByg/Bestil",ctx -> OrderCarport(ctx,connectionPool));
+
     }
 
     private static void saveCarport(Context ctx) {
@@ -41,12 +42,12 @@ public class QuickBygController {
         }
         ctx.sessionAttribute("Carport",carportDesign);
 
+
         ctx.redirect("QuickByg/Oplysninger");
     }
 
     private static void Oplysninger(Context ctx, ConnectionPool connectionPool) {
         //Get already existing information
-
         ctx.render("QuickBygOplysninger.html");
     }
 
