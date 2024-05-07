@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="../public/css/adminOrders.css" th:href="@{/css/adminOrders.css}" rel="stylesheet"/>
+<head>
+    <title>Admin Panel</title>
+    <link rel="icon" type="image/x-icon" href="/public/images/foglogo.png" th:href="@{/images/foglogo.png}">
+</head>
+
+<body>
+<input type="checkbox" id="sidebar-toggle" class="toggle-checkbox">
+<div class="sidebar">
+    <h2>Admin Orders</h2>
+    <ul>
+        <li><a href="/QuickByg">Frontpage</a></li>
+        <li><a href="/adminView">Orders</a></li>
+        <li><a href="/viewUsers">Users</a></li>
+    </ul>
+</div>
+
+<label for="sidebar-toggle" class="toggle-btn">&#9776; Toggle Sidebar</label>
+
+<div class="order-box">
+    <form method="post">
+        <h2 class="text">Order list</h2>
+        <table>
+            <thead>
+            <tr>
+                <th> Order</th>
+                <th> Date</th>
+                <th> userid</th>
+                <th> Actions</th>
+            </tr>
+            </thead>
+
+            <tr th:if="${#lists.isEmpty(session.orders)}">
+                <td colspan="4"> There is no orders</td>
+            </tr>
+            <tr th:each="order : ${session.orders}">
+                <td><span th:text="${order.order_id}"> OrderID </span></td>
+                <td><span th:text="${order.getDate()}"> Date </span></td>
+                <td><span th:text="${order.user_id}"> UserID </span></td>
+                <td>
+                    <button type="submit" name="orderID" th:value="${order.order_id}" formaction="/viewOrder">View
+                    </button>
+                    <button type="submit" name="orderID" th:value="${order.order_id}" formaction="/deleteOrder">Delete
+                    </button>
+                </td>
+            </tr>
+
+        </table>
+    </form>
+</div>
+</body>
+</html>
