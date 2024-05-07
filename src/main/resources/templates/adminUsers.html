@@ -28,18 +28,24 @@
             <tr>
                 <th> UserID</th>
                 <th> Username</th>
+                <th> Name</th>
+                <th> Address</th>
+                <th> City</th>
+                <th> Postal code</th>
                 <th> Phone number</th>
                 <th> Email</th>
-                <th> Address</th>
             </tr>
             </thead>
 
             <tr th:each="user : ${session.users}">
                 <td><span th:text="${user.user_id == 0 ? 'User ID' : user.user_id}"> User ID </span></td>
                 <td><span th:text="${user.username == null ? 'Username' : user.username}"> Username </span></td>
-                <td><span th:text="${user.phone_number == 0 ? 'Phone number' : user.phone_number}">Phone number</span></td>
-                <td><span th:text="${user.email == null ? 'Email' : user.email}"> Email </span></td>
-                <td><span th:text="${user.address == null ? 'Address' : user.address}"> Address </span></td>
+                <td><span th:text="${user.getContactInformation().getName() == null ? 'Name' : user.getContactInformation().getName()}"> Username </span></td>
+                <td><span th:text="${user.getContactInformation().getAddress() == null ? 'Address' : user.getContactInformation().getAddress()}"> Address </span></td>
+                <td><span th:text="${user.getContactInformation().getCity() == null ? 'City' : user.getContactInformation().getCity()}"> City </span></td>
+                <td><span th:text="${user.getContactInformation().getPostal_code() == 0 ? 'Postal code' : user.getContactInformation().getPostal_code()}"> Postal code </span></td>
+                <td><span th:text="${user.getContactInformation().getPhone_number() == 0 ? 'Phone number' : user.getContactInformation().getPhone_number()}"> Phone number </span></td>
+                <td><span th:text="${user.getContactInformation().getEmail() == null ? 'Email' : user.getContactInformation().getEmail()}"> Email </span></td>
             </tr>
         </table>
     </form>

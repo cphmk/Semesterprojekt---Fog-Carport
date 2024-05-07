@@ -15,9 +15,10 @@ public class User {
 
     }
 
-    public User(int user_id, String username) {
+    public User(int user_id, String username, ContactInformation contactInformation) {
         this.user_id = user_id;
         this.username = username;
+        this.contactInformation = contactInformation;
     }
 
     public int getUser_id() {
