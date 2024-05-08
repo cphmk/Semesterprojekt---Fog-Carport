@@ -11,10 +11,15 @@ import io.javalin.http.Context;
 public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("login", ctx -> login(ctx, connectionPool));
-        app.get("login", ctx -> ctx.render("loginpage.html"));
+        app.get("login", ctx -> {
+            String redirectUrl = ctx.req().getHeader("Referer");
+            ctx.sessionAttribute("redirectUrl", redirectUrl);
+            ctx.render("loginpage.html");
+        });
         app.get("logout", ctx -> logout(ctx));
         app.get("signup", ctx -> ctx.render("signup.html"));
         app.post("signup", ctx -> signup(ctx, connectionPool));
+        app.get("viewAccount", ctx -> ctx.render("orderPage.html"));
     }
 
     private static void logout(Context ctx) {
@@ -53,19 +58,23 @@ public class UserController {
             User user = UserMapper.login(username, password, connectionPool);
             ctx.sessionAttribute("currentUser", user);
             if (user.getRole()) {
+                ctx.sessionAttribute("loggedIn", true);
                 ctx.redirect("adminView");
-            } else
-                ctx.render("QuickBygFrontpage.html");
-            } catch(DatabaseException e){
-                // Hvis nej, send tilbage til login side med fejl besked
-                if (e.getMessage().equals("DB fejl")) {
-                    ctx.attribute("message", "Can't connect to db");
-                }
-                if (e.getMessage().equals("Fejl i login. Prøv igen")) {
-                    ctx.attribute("message", "Wrong username or password");
-                }
-                ctx.render("loginpage.html");
+            } else {
+                ctx.sessionAttribute("loggedIn", true);
+                String previousPage = ctx.sessionAttribute("redirectUrl");
+                ctx.redirect(previousPage != null ? previousPage : "/");
             }
+        } catch (DatabaseException e) {
+            // Hvis nej, send tilbage til login side med fejl besked
+            if (e.getMessage().equals("DB fejl")) {
+                ctx.attribute("message", "Can't connect to db");
+            }
+            if (e.getMessage().equals("Fejl i login. Prøv igen")) {
+                ctx.attribute("message", "Wrong username or password");
+            }
+            ctx.render("loginpage.html");
+        }
 
     }
 }

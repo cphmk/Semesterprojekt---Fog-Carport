@@ -24,9 +24,9 @@
         </div>
     </div>
     <div class="right-div">
-        <form method="get">
+        <form th:action="${session.loggedIn ? '/viewAccount' : '/login'}">
             <div class="account">
-                <button class="account-click" formaction="login">
+                <button class="account-click" type="submit" >
                     <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 25 25">
                         <path fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
                               stroke-linejoin="round"
@@ -66,6 +66,9 @@
 
 <div class="footer"></div>
 
+<form th:action="${loggedIn ? '/orderPage' : '/loginpage'}" method="post">
+    <!-- Your form fields -->
+</form>
 
 </body>
 </html>
