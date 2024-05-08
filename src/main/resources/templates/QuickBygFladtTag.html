@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QuickByg | Fladt tag</title>
+    <link href="../public/css/QBFormpage.css" th:href="@{/css/QBFormpage.css}" rel="stylesheet"/>
+    <link href="../public/css/QuickByg.css" th:href="@{/css/QuickByg.css}" rel="stylesheet"/>
+    <link href="../public/css/header.css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link href="../public/css/FogStyles.css" th:href="@{/css/FogStyles.css}" rel="stylesheet"/>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.cdnfonts.com/css/sansation" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/public/images/foglogo.png" th:href="@{/images/foglogo.png}">
+</head>
+<body>
+
+<div class="header">
+    <div class="left-div">
+        <div class="logo">
+            <form>
+                <button class="logo-click" formaction="/">
+                    <img src="../public/images/foglogo.png" th:src="@{/images/foglogo.png}">
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="right-div">
+        <form method="get">
+            <div class="account">
+                <button class="account-click" formaction="login">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 25 25">
+                        <path fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M12.5 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM5 20v-1a4 4 0 0 1 4-4h7a4 4 0 0 1 4 4v1h0">
+                        </path>
+                    </svg>
+                    <span>Fog Konto</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="main">
+    <div class="text-box">
+        <h1>Bestil Quick-Byg tilbud - carport med fladt tag</h1>
+        <h3>Med et specialudviklet computerprogram kan vi lynhurtigt beregne prisen
+            og udskrive en skitsetegning på en carport indenfor vores  standardprogram.
+            Tilbud og skitsetegning fremsendes med post hurtigst muligt.Ved bestilling
+            medfølger standardbyggevejledning.</h3>
+        <h3>Udfyld formularen omhyggeligt og klik på "Gå videre".
+            Felter markeret med * SKAL udfyldes!</h3>
+    </div>
+    <form method="post">
+    <div class="forms-box">
+        <div class="forms-text">
+            <h1>Carport med fladt tag</h1>
+            <h3>Udfyld nedenstående
+                omhyggeligt og tryk "Gå videre".</h3>
+            <h3>Så vender vi hurtigst muligt
+                tilbage med et tilbud til dig.</h3>
+        </div>
+        <div class="forms">
+            <h2>Carport</h2>
+            <div class="form-box">
+            <label for="carport_bredde">Carport bredde*</label>
+            <select name="carport_bredde" id="carport_bredde" required>
+                <option selected disabled>Vælg bredde</option>
+                <option value="240">240 cm</option>
+                <option value="270">270 cm</option>
+                <option value="300">300 cm</option>
+                <option value="330">330 cm</option>
+                <option value="360">360 cm</option>
+                <option value="390">390 cm</option>
+                <option value="420">420 cm</option>
+                <option value="450">450 cm</option>
+                <option value="480">480 cm</option>
+                <option value="510">510 cm</option>
+                <option value="540">540 cm</option>
+                <option value="570">570 cm</option>
+                <option value="600">600 cm</option>
+            </select>
+            </div>
+            <div class="form-box">
+            <label for="carport_længde">Carport længde*</label>
+            <select name="carport_længde" id="carport_længde" required>
+                <option selected disabled>Vælg længde</option>
+                <option value="240">240 cm</option>
+                <option value="270">270 cm</option>
+                <option value="300">300 cm</option>
+                <option value="330">330 cm</option>
+                <option value="360">360 cm</option>
+                <option value="390">390 cm</option>
+                <option value="420">420 cm</option>
+                <option value="450">450 cm</option>
+                <option value="480">480 cm</option>
+                <option value="510">510 cm</option>
+                <option value="540">540 cm</option>
+                <option value="570">570 cm</option>
+                <option value="630">630 cm</option>
+                <option value="660">660 cm</option>
+                <option value="690">690 cm</option>
+                <option value="720">720 cm</option>
+                <option value="750">750 cm</option>
+                <option value="780">780 cm</option>
+            </select>
+            </div>
+            <div class="form-box">
+                <label for="carport_tag">Carport trapeztag*</label>
+                <select name="carport_tag" id="carport_tag" required>
+                    <option selected>Uden tagplader</option>
+                    <option>Plasttrapezplader</option>
+                </select>
+            </div>
+        </div>
+        <div class="forms">
+            <h2>Redskabsrum</h2>
+            <div class="box-buttons">
+                <button class="button-design" onclick="myFunction()">Ja</button>
+                <button class="button-design" onclick="myFunction()">Nej</button>
+            </div>
+            <div class="form-box">
+                <label for="redskabsrum_bredde">Redskabsrum bredde*</label>
+                <select name="redskabsrum_bredde" id="redskabsrum_bredde" required>
+                    <option selected disabled>Vælg bredde</option>
+                    <option value="210">210 cm</option>
+                    <option value="240">240 cm</option>
+                    <option value="270">270 cm</option>
+                    <option value="300">300 cm</option>
+                    <option value="330">330 cm</option>
+                    <option value="360">360 cm</option>
+                    <option value="390">390 cm</option>
+                    <option value="420">420 cm</option>
+                    <option value="450">450 cm</option>
+                    <option value="480">480 cm</option>
+                    <option value="510">510 cm</option>
+                    <option value="540">540 cm</option>
+                    <option value="570">570 cm</option>
+                    <option value="630">630 cm</option>
+                    <option value="660">660 cm</option>
+                    <option value="690">690 cm</option>
+                    <option value="720">720 cm</option>
+                </select>
+            </div>
+            <div class="form-box">
+                <label for="redskabsrum_længde">Redskabsrum længde*</label>
+                <select name="redskabsrum_længde" id="redskabsrum_længde" required>
+                    <option selected disabled>Vælg længde</option>
+                    <option value="150">150 cm</option>
+                    <option value="180">180 cm</option>
+                    <option value="210">210 cm</option>
+                    <option value="240">240 cm</option>
+                    <option value="270">270 cm</option>
+                    <option value="300">300 cm</option>
+                    <option value="330">330 cm</option>
+                    <option value="360">360 cm</option>
+                    <option value="390">390 cm</option>
+                    <option value="420">420 cm</option>
+                    <option value="450">450 cm</option>
+                    <option value="480">480 cm</option>
+                    <option value="510">510 cm</option>
+                    <option value="540">540 cm</option>
+                    <option value="570">570 cm</option>
+                    <option value="630">630 cm</option>
+                    <option value="660">660 cm</option>
+                    <option value="690">690 cm</option>
+                </select>
+            </div>
+        </div>
+        <div class="forms">
+            <h2>Kommentarer</h2>
+            <div class="form-box">
+                <label for="kommentar">Evt. bemærkning / særlige ønsker</label>
+                <textarea id="kommentar" name="kommentar"></textarea>
+            </div>
+        </div>
+        <div class="button-forms">
+            <button class="button-design" formaction="/Carport">Gå videre</button>
+        </div>
+    </div>
+    </form>
+</div>
+
+<div class="footer"></div>
+
+</body>
+</html>
