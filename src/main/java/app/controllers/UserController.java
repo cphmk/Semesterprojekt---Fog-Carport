@@ -1,12 +1,16 @@
 package app.controllers;
 
 
+import app.entities.Order;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.ConnectionPool;
+import app.persistence.OrderMapper;
 import app.persistence.UserMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+
+import java.util.ArrayList;
 
 public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
@@ -16,10 +20,13 @@ public class UserController {
             ctx.sessionAttribute("redirectUrl", redirectUrl);
             ctx.render("loginpage.html");
         });
+        app.post("loginpage", ctx -> ctx.render("loginpage.html"));
         app.get("logout", ctx -> logout(ctx));
         app.get("signup", ctx -> ctx.render("signup.html"));
         app.post("signup", ctx -> signup(ctx, connectionPool));
-        app.get("viewAccount", ctx -> ctx.render("orderPage.html"));
+        app.get("viewAccount", ctx -> getOrder(ctx, connectionPool));
+        app.post("viewAccount", ctx -> getOrder(ctx, connectionPool));
+        app.post("deleteOrder", ctx -> deleteOrder(ctx, connectionPool));
     }
 
     private static void logout(Context ctx) {
@@ -76,5 +83,28 @@ public class UserController {
             ctx.render("loginpage.html");
         }
 
+    }
+
+    public static void getOrder(Context ctx, ConnectionPool connectionPool) {
+        ArrayList<Order> orders = new ArrayList<>();
+        User user = ctx.sessionAttribute("currentUser");
+        try {
+            orders = OrderMapper.getOrdersByUserID(user.getUser_id(), connectionPool);
+            ctx.sessionAttribute("Orders", orders);
+            ctx.render("orderPage.html");
+        } catch (DatabaseException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void deleteOrder(Context ctx, ConnectionPool connectionPool) {
+        int orderID = Integer.parseInt(ctx.formParam("order_id"));
+
+        try {
+            OrderMapper.deleteOrder(orderID, connectionPool);
+        } catch (DatabaseException e) {
+            throw new RuntimeException(e);
+        }
+        ctx.redirect("viewAccount");
     }
 }

@@ -14,12 +14,12 @@ public class QuickBygController {
 
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.get("/QuickByg", ctx -> ctx.render("QuickBygFrontpage.html"));
+        app.post("/QuickByg", ctx -> ctx.render("QuickBygFrontpage.html"));
         app.get("/QuickByg/FladtTag", ctx -> ctx.render("QuickBygFladtTag.html"));
         app.get("/QuickByg/HoejtTag", ctx -> ctx.render("QuickBygOplysninger.html"));
         app.post("/QuickByg/Carport", ctx -> saveCarport(ctx));
         app.post("/QuickByg/Oplysninger", ctx -> Oplysninger(ctx, connectionPool));
         app.post("/QuickByg/Bestil",ctx -> OrderCarport(ctx,connectionPool));
-
     }
 
     private static void saveCarport(Context ctx) {
