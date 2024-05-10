@@ -63,6 +63,7 @@ public class UserController {
         // Check om bruger findes i DB med de angivne username + password
         try {
             User user = UserMapper.login(username, password, connectionPool);
+            user.setContactInformation(UserMapper.getContactInformation(user.getUser_id(),connectionPool));
             ctx.sessionAttribute("currentUser", user);
             if (user.getRole()) {
                 ctx.sessionAttribute("loggedIn", true);

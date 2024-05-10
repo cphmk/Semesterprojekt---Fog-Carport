@@ -9,8 +9,6 @@ public class Order {
     private int user_id;
     private String comment;
     private int carport_id;
-
-
     public Order(int order_id, Date date, String status, int user_id, String comment, int carport_id) {
         this.order_id = order_id;
         this.date = date;

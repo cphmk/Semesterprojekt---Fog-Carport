@@ -56,8 +56,36 @@ public class UserMapper {
         }
     }
 
+    public static ContactInformation getContactInformation(int userId, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM contact WHERE user_id = ?";
 
-    public static void insertContactInformation(ContactInformation contactInformation, User user, ConnectionPool connectionPool) throws DatabaseException {
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String city = rs.getString("city");
+                int postal_code = rs.getInt("postal_code");
+                int phone_number = rs.getInt("phone_number");
+                String email = rs.getString("email");
+                System.out.println("Contact information gathered");
+
+                return new ContactInformation(name,address,postal_code,city,phone_number,email);
+            } else {
+                throw new DatabaseException("Fejl i login. Prøv igen");
+            }
+        } catch (SQLException e) {
+            throw new DatabaseException("DB fejl", e.getMessage());
+        }
+    }
+
+
+    public static void insertContactInformation(User user, ConnectionPool connectionPool) throws DatabaseException {
         //Insert into contact table with information
         String contactSQL = "INSERT INTO contact (name,address,city,postal_code,phone_number,email) VALUES (?,?,?,?,?,?) WHERE user_id = ?";
 
@@ -70,7 +98,9 @@ public class UserMapper {
             ps.setString(3, user.getContactInformation().getCity());
             ps.setInt(4, user.getContactInformation().getPostal_code());
             ps.setInt(5, user.getContactInformation().getPhone_number());
-            ps.setString(6, user.getContactInformation().getName());
+            ps.setString(6, user.getContactInformation().getEmail());
+
+            ps.setInt(7,user.getUser_id());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
@@ -81,6 +111,32 @@ public class UserMapper {
             if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
                 msg = "Kontaktinformationen findes allerede.";
             }
+            throw new DatabaseException(msg, e.getMessage());
+        }
+    }
+
+    public static void updateContactInformation(User user, ConnectionPool connectionPool) throws DatabaseException {
+        String contactSQL = "UPDATE contact SET name = ?, address = ?, city = ?, postal_code = ?, phone_number = ?, email = ? WHERE user_id = ?";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(contactSQL)
+        ) {
+            ps.setString(1, user.getContactInformation().getName());
+            ps.setString(2, user.getContactInformation().getAddress());
+            ps.setString(3, user.getContactInformation().getCity());
+            ps.setInt(4, user.getContactInformation().getPostal_code());
+            ps.setInt(5, user.getContactInformation().getPhone_number());
+            ps.setString(6, user.getContactInformation().getEmail());
+
+            ps.setInt(7,user.getUser_id());
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl ved opdatering af ny kontakt information");
+            }
+        } catch (SQLException e) {
+            String msg = "Der er sket en fejl. Prøv igen";
             throw new DatabaseException(msg, e.getMessage());
         }
     }
@@ -112,4 +168,5 @@ public class UserMapper {
         }
         return user;
     }
+
 }
