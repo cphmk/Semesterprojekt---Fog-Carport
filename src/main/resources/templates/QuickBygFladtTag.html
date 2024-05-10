@@ -116,10 +116,10 @@
         <div class="forms">
             <h2>Redskabsrum</h2>
             <div class="box-buttons">
-                <button class="button-design" onclick="myFunction()">Ja</button>
-                <button class="button-design" onclick="myFunction()">Nej</button>
+                <button type="button" class="button-design" onclick="showRedskabsrum()">Ja</button>
+                <button type="button" class="button-design" onclick="hideRedskabsrum()">Nej</button>
             </div>
-            <div class="form-box">
+            <div class="form-box" id="redskabsrum1">
                 <label for="redskabsrum_bredde">Redskabsrum bredde*</label>
                 <select name="redskabsrum_bredde" id="redskabsrum_bredde" required>
                     <option selected disabled>Vælg bredde</option>
@@ -142,7 +142,7 @@
                     <option value="720">720 cm</option>
                 </select>
             </div>
-            <div class="form-box">
+            <div class="form-box" id="redskabsrum2">
                 <label for="redskabsrum_længde">Redskabsrum længde*</label>
                 <select name="redskabsrum_længde" id="redskabsrum_længde" required>
                     <option selected disabled>Vælg længde</option>
@@ -182,6 +182,8 @@
 </div>
 
 <div class="footer"></div>
+
+<script src="../public/javascript/FormsScript.js"></script>
 
 </body>
 </html>
