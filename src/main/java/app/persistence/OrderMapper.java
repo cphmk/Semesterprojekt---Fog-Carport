@@ -20,6 +20,7 @@ public class OrderMapper {
             PreparedStatement ps = connection.prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
+
             while (rs.next()) {
                 int order_id = rs.getInt("order_id");
                 Date date = rs.getDate("date");

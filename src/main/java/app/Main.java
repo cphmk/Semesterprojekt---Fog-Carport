@@ -9,6 +9,7 @@ import app.controllers.AdminController;
 import app.controllers.OrderController;
 
 import app.controllers.UserController;
+import app.entities.Order;
 import app.persistence.ConnectionPool;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinThymeleaf;
@@ -34,10 +35,11 @@ public class Main {
         // Routing
 
 
-        app.get("/", ctx -> ctx.render("QuickBygFrontpage.html"));
+        app.get("/", ctx -> ctx.render("indexx.html"));
         QuickBygController.addRoutes(app,connectionPool);
         UserController.addRoutes(app, connectionPool);
         AdminController.addRoutes(app, connectionPool);
+        OrderController.addRoutes(app,connectionPool);
 
     }
 }

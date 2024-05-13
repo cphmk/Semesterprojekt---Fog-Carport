@@ -40,6 +40,8 @@ public class Svg
     public void addArrow(int x1, int y1, int x2, int y2, String style)
     {
         // Kald addLine med en style der indeholder pilehoveder
+        //addLine();
+        svg.append(String.format(SVG_ARROW_DEFS));
     }
 
     public void addText(int x, int y, int rotation, String text)
