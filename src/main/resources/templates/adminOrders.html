@@ -44,9 +44,9 @@
                 <td><span th:text="${order.getDate()}"> Date </span></td>
                 <td><span th:text="${order.user_id}"> UserID </span></td>
                 <td>
-                    <button type="submit" name="orderID" th:value="${order.order_id}" formaction="/viewOrder">View
+                    <button type="submit" name="orderID" th:value="${order.order_id}" formaction="viewOrder">View
                     </button>
-                    <button type="submit" name="orderID" th:value="${order.order_id}" formaction="/deleteOrder">Delete
+                    <button type="submit" name="orderID" th:value="${order.order_id}" formaction="deleteOrderAdmin">Delete
                     </button>
                 </td>
             </tr>
