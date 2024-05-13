@@ -18,8 +18,13 @@ public class OrderMapper {
         try {
             Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql);
-
             ResultSet rs = ps.executeQuery();
+
+            if (!rs.isBeforeFirst()) {
+                // No orders found, return empty list
+                return orders;
+            }
+
             while (rs.next()) {
                 int order_id = rs.getInt("order_id");
                 Date date = rs.getDate("date");
@@ -47,6 +52,24 @@ public class OrderMapper {
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl i opdatering af en task");
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException("DB fejl", e.getMessage());
+        }
+    }
+
+    public static void deleteOrderItem(int orderID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "delete from order_item where order_id = ?";
+
+        try {
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, orderID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
                 throw new DatabaseException("Fejl i opdatering af en task");
             }
 
