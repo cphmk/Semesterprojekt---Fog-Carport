@@ -36,11 +36,12 @@ public class AdminController {
         int orderID = Integer.parseInt(ctx.formParam("orderID"));
 
         try {
+            OrderMapper.deleteOrderItem(orderID, connectionPool);
             OrderMapper.deleteOrder(orderID, connectionPool);
         } catch (DatabaseException e) {
             throw new RuntimeException(e);
         }
-        ctx.redirect("admin");
+        ctx.redirect("adminView");
     }
 
     public static void getAllUsers(Context ctx, ConnectionPool connectionPool) {
