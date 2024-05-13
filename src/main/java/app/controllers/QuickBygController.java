@@ -110,7 +110,8 @@ public class QuickBygController {
 
         //Opret ordre i db
         try {
-            OrderMapper.addOrder(carportDesign, user.getUser_id(), carport_id, connectionPool);
+           int order_id = OrderMapper.addOrder(carportDesign, user.getUser_id(), carport_id, connectionPool);
+           ctx.sessionAttribute("order_id",order_id);
         } catch (DatabaseException e) {
             throw new RuntimeException(e);
         }

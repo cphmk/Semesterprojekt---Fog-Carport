@@ -1,44 +1,44 @@
+
+
 .flex-container {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: lightgrey;
 }
 
 .flex-box {
     flex-grow: 2;
-}
-
-.flex-box1 {
-    flex-grow: 2;
-
-}
-
-.img-responsive {
     max-width: 100%;
+    padding: 10px;
     height: auto;
 }
 
+.flex-box1 img {
+    flex-grow: 2;
+    max-width: 100%;
+    padding: 10px;
+    height: auto;
+    border-radius: 5px;
+}
+
 .btn-container {
-    text-align: center; /* Centrerer indholdet i containeren */
+    background-color: lightgrey;
+}
+
+.btn-container {
+    text-align: center;
 }
 
 .btn, .btn1 {
     display: inline-block;
-    padding: 10px 20px;
-    margin: 20px;
+    padding: 30px 20px;
+    margin: 30px 20px;
     border-radius: 10px;
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
 }
 
-.btn, .btn1 {
-    display: inline-block;
-    padding: 10px 20px;
-    margin: 20px;
-    border-radius: 10px;
-    font-size: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-}
 
 
 @media screen and (max-width: 375px) {
@@ -47,7 +47,5 @@
         align-items: center;
     }
 
-    .btn, .btn1 {
-        width: 80%;
-    }
+
 }
