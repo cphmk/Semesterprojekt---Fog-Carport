@@ -89,6 +89,18 @@
     text-decoration: none;
     border-radius: 5px;
 }
+.button1 {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+
 
 .remove-button {
     font-family: "Lato", sans-serif;

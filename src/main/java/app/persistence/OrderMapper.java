@@ -78,7 +78,7 @@ public class OrderMapper {
         }
     }
 
- public static void addOrder(CarportDesign carportDesign, int user_id, int carport_id, ConnectionPool connectionPool) throws DatabaseException {
+    public static void addOrder(CarportDesign carportDesign, int user_id, int carport_id, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "INSERT INTO orders (status, date, user_id, comment, carport_id) VALUES (?,?,?,?,?)";
 
         try {
@@ -99,8 +99,8 @@ public class OrderMapper {
             throw new DatabaseException("DB fejl", e.getMessage());
         }
     }
-  
-  public static ArrayList<Order> getOrdersByUserID(int userID,ConnectionPool connectionPool) throws DatabaseException {
+
+    public static ArrayList<Order> getOrdersByUserID(int userID, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "select * from orders WHERE user_id = ?";
 
         ArrayList<Order> orders = new ArrayList<>();
@@ -128,5 +128,25 @@ public class OrderMapper {
         }
         return orders;
     }
-  
+
+    public static void updateOrderStatus(int order_id, String status, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "update orders SET status = ?, WHERE order_id = ?";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, status);
+            ps.setInt(2, order_id);
+
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl ved opdatering af order status");
+            }
+        } catch (SQLException e) {
+            String msg = "Der er sket en fejl. Prøv igen";
+            throw new DatabaseException(msg, e.getMessage());
+        }
+    }
 }
