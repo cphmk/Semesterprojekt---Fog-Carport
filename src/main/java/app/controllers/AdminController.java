@@ -15,7 +15,8 @@ import java.util.ArrayList;
 public class AdminController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.get("adminView", ctx -> getAllOrders(ctx, connectionPool));
-        app.post("deleteOrder", ctx -> deleteOrder(ctx, connectionPool));
+        app.post("adminView", ctx -> getAllOrders(ctx, connectionPool));
+        app.post("deleteOrderAdmin", ctx -> deleteOrder(ctx, connectionPool));
         app.get("viewUsers", ctx -> getAllUsers(ctx, connectionPool));
     }
 

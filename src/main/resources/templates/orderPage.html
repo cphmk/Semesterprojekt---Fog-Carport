@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>QuickByg | Bekræftelse</title>
-    <link href="../public/css/QuickByg.css" th:href="@{/css/QuickByg.css}" rel="stylesheet"/>
+    <title></title>
     <link href="../public/css/header.css" th:href="@{/css/header.css}" rel="stylesheet"/>
     <link href="../public/css/FogStyles.css" th:href="@{/css/FogStyles.css}" rel="stylesheet"/>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link href="https://fonts.cdnfonts.com/css/sansation" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="/public/images/foglogo.png" th:href="@{/images/foglogo.png}">
+    <link href="../public/css/orderPage.css" th:href="@{/css/orderPage.css}" rel="stylesheet"/>
 </head>
 <body>
 
@@ -23,9 +23,10 @@
         </div>
     </div>
     <div class="right-div">
-        <form th:action="${session.loggedIn ? (session.currentUser.role==false ? '/viewAccount' : '/adminView') : '/login'}" method="post">
+        <form th:action="${session.loggedIn ? (session.currentUser.role==false ? '/viewAccount' : '/adminView') : '/login'}"
+              method="post">
             <div class="account">
-                <button class="account-click" type="submit" >
+                <button class="account-click" type="submit">
                     <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 25 25">
                         <path fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
                               stroke-linejoin="round"
@@ -39,17 +40,27 @@
         </form>
     </div>
 </div>
+<div class="body">
+    <div class="container">
+        <form method="post">
+            <div class="item" th:each="order : ${session.Orders}">
+                <img src="item1.jpg" alt="Item 1">
+                <div class="item-details">
+                    <h3 class="item-name">Carport med <span th:text="${order.comment}">Carport navn</span></h3>
+                    <p class="item-price">$10.00</p>
+                </div>
+                <button type="submit" class="button remove-button" name="order_id" th:value="${order.order_id}"
+                        formaction="deleteOrder">Remove
+                </button>
 
-<div class="main">
-    <div class="text-box">
-        <h1>Quick-byg tilbud oplysninger er nu sendt til FOG</h1>
-        <h3>FOG vil snart kontakte dig, angående dit tilbud om carport</h3>
+            </div>
+            <div class="total-price">
+                Total: $25.00
+            </div>
+
+            <button class="button" formaction="QuickByg">Continue Shopping</button>
+        </form>
     </div>
 </div>
-
-
-<div class="footer"></div>
-
-
 </body>
 </html>
