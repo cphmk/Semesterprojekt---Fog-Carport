@@ -55,12 +55,12 @@ public class OrderMapper {
         }
     }
 
-    public static void addOrder(CarportDesign carportDesign, int user_id, int carport_id, ConnectionPool connectionPool) throws DatabaseException {
+    public static int addOrder(CarportDesign carportDesign, int user_id, int carport_id, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "INSERT INTO orders (status, date, user_id, comment, carport_id) VALUES (?,?,?,?,?)";
 
         try {
             Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql);
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, "Pending");
             ps.setDate(2, Date.valueOf(LocalDate.now()));
             ps.setInt(3, user_id);
@@ -70,6 +70,13 @@ public class OrderMapper {
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
                 throw new DatabaseException("Fejl i opdatering af en task");
+            }
+
+            ResultSet generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                return generatedKeys.getInt(1);
+            } else {
+                throw new DatabaseException("Fejl ved oprettelse af nyt order - kunne ikke finde genereret id");
             }
 
         } catch (SQLException e) {
