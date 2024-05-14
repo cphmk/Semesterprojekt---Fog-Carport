@@ -18,7 +18,7 @@ class CalculatorTest {
 
         // TODO: Create an instance of Calculator and call calcPostQuantity() with carportDesign
         Calculator calculator = new Calculator(carportDesign, 0, null);
-        int actualQuantity = calculator.calcPostQuantity(carportDesign);
+        int actualQuantity = calculator.calcPostQuantity();
 
         // TODO: Compare the expected result with the actual result.
         assertEquals(expectedQuantity, actualQuantity);

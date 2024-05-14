@@ -4,8 +4,6 @@ import app.entities.CarportDesign;
 
 public class CarportSvg
 {
-    private int width;
-    private int length;
     private Svg carportSvg;
 
     private CarportDesign carportDesign;
@@ -46,7 +44,7 @@ public class CarportSvg
 
     private void addPost() {
         //Hvis der er et redskabsrum
-        if (carportDesign.getCarport_width() != 0) {
+        if (carportDesign.getRedskabsrum_width() != 0) {
             //Top left
             carportSvg.addRectangle(30, 35, 10, 10, "stroke-width:3px; stroke:#000000; fill: red");
             //Top right
@@ -62,7 +60,7 @@ public class CarportSvg
         }
 
         //Hvis der ikke er et redskabsrum
-        if (carportDesign.getRedskabsrum_width() == 0) {
+        else if (carportDesign.getRedskabsrum_width() == 0) {
             for (double i = 100; i < carportDesign.getCarport_length()-30; i += 200) {
                 carportSvg.addRectangle(i,35, 7, 7, "stroke-width:3px; stroke:#000000; fill: green");
                 carportSvg.addRectangle(i,carportDesign.getCarport_width()-35, 7,7, "stroke-width:3px; stroke:#000000; fill: green");

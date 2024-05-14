@@ -144,10 +144,10 @@ public class UserMapper {
     public static ArrayList<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
         ArrayList<User> user = new ArrayList<>();
         String sql = "SELECT * FROM users INNER JOIN contact ON users.user_id = contact.user_id WHERE users.admin = false";
-        try {
-            Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql);
-
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int user_id = rs.getInt("user_id");

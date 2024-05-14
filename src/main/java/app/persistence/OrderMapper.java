@@ -2,12 +2,14 @@ package app.persistence;
 
 import app.entities.CarportDesign;
 import app.entities.Order;
+import app.entities.Order_item;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderMapper {
     public static ArrayList<Order> getOrders(ConnectionPool connectionPool) throws DatabaseException {
@@ -60,6 +62,70 @@ public class OrderMapper {
             throw new DatabaseException("DB fejl", e.getMessage());
         }
     }
+
+    public static void addOrderItems(List<Order_item> orderItems, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "INSERT INTO order_item(variant_id, order_id, quantity, description, price) VALUES (?,?,?,?,?)";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+
+            for (Order_item orderItem : orderItems) {
+                ps.setInt(1, orderItem.getVariant_id());
+                ps.setInt(2, orderItem.getOrder_id());
+                ps.setInt(3, orderItem.getQuantity());
+                ps.setString(4, orderItem.getDescription());
+                ps.setDouble(5, orderItem.getPrice());
+
+                ps.addBatch();
+            }
+
+            int[] rowsAffected = ps.executeBatch();
+
+            for (int rows : rowsAffected) {
+                if (rows != 1) {
+                    throw new DatabaseException("Fejl ved oprettelse af ny order item");
+                }
+            }
+        } catch (SQLException e) {
+            String msg = "Der er sket en fejl. Prøv igen";
+            if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
+                msg = "Order item findes allerede.";
+            }
+            throw new DatabaseException(msg, e.getMessage());
+        }
+    }
+
+    public static ArrayList<Order_item> getOrderItems(int order_id, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "SELECT * FROM order_item INNER JOIN variant USING(variant_id) INNER JOIN material USING(material_id) WHERE order_id = ?";
+
+        ArrayList<Order_item> orderItems = new ArrayList<>();
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setInt(1, order_id);
+
+            try(ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    String name = rs.getString("name");
+                    int length = rs.getInt("length");
+                    int quantity = rs.getInt("quantity");
+                    String unit = rs.getString("unit");
+                    String description = rs.getString("description");
+
+                    orderItems.add(new Order_item(name, length, quantity, unit, description));
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException("DB fejl", e.getMessage());
+        }
+        return orderItems;
+    }
+
 
     public static void deleteOrderItem(int orderID, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "delete from order_item where order_id = ?";
@@ -140,6 +206,7 @@ public class OrderMapper {
         }
         return orders;
     }
+
 
     public static void updateOrderStatus(int order_id, String status, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "update orders SET status = ?, WHERE order_id = ?";

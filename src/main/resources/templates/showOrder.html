@@ -12,15 +12,41 @@
 
 <p>This is where we show the order details and the drawing when the customer has accepted the offer</p>
 
-<p>We want to inject a SVG drawing below:</p>
+<p>We want to inject an SVG drawing below:</p>
 
 <div class="carport-svg-topview">
 
+    <!-- Svg tegning -->
     <div th:utext="${svg}"></div>
 
+    <!-- Stykliste -->
+    <table>
+        <thead>
+        <tr>
+            <th> Trætype og mål</th>
+            <th> Længde</th>
+            <th> Antal</th>
+            <th> Enhed</th>
+            <th> Beskrivelse</th>
+        </tr>
+        </thead>
 
+        <tr th:if="${#lists.isEmpty(session.stykliste)}">
+            <td colspan="5"> Der er ingen stykliste</td>
+        </tr>
+        <tr th:each="order_item : ${session.stykliste}">
+            <td><span th:text="${order_item.name}"> Trætype og mål </span></td>
+            <td><span th:text="${order_item.length}"> Længde </span></td>
+            <td><span th:text="${order_item.quantity}"> Antal </span></td>
+            <td><span th:text="${order_item.unit}"> Enhed </span></td>
+            <td><span th:text="${order_item.description}"> Beskrivelse </span></td>
+        </tr>
+    </table>
 
 </div>
-
+<form method="post">
+    <button type="submit" formaction="adminView">Go back
+    </button>
+</form>
 </body>
 </html>

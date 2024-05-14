@@ -1,25 +1,38 @@
 package app.entities;
 
-import java.util.ArrayList;
-import java.util.Date;
-
 public class Order_item {
     private int order_item_id;
     private int quantity;
     private String description;
-    private int material_id;
+    private int variant_id;
     private int order_id;
     private double price;
 
 
-    public Order_item(int order_item_id, int quantity, String description, int material_id, int order_id, double price) {
+    private String name;
+
+    private String unit;
+
+    private int length;
+
+
+    public Order_item(int order_item_id, int quantity, String description, int variant_id, int order_id, double price) {
         this.order_item_id = order_item_id;
         this.quantity = quantity;
         this.description = description;
-        this.material_id = material_id;
+        this.variant_id = variant_id;
         this.order_id = order_id;
         this.price = price;
     }
+
+    public Order_item(String name, int length, int quantity, String unit, String description) {
+        this.name = name;
+        this.length = length;
+        this.quantity = quantity;
+        this.unit = unit;
+        this.description = description;
+    }
+
 
     public int getOrder_item_id() {
         return order_item_id;
@@ -37,12 +50,12 @@ public class Order_item {
         this.order_id = order_id;
     }
 
-    public int getMaterial_id() {
-        return material_id;
+    public int getVariant_id() {
+        return variant_id;
     }
 
-    public void setMaterial_id(int material_id) {
-        this.material_id = material_id;
+    public void setVariant_id(int variant_id) {
+        this.variant_id = variant_id;
     }
 
     public String getDescription() {
@@ -69,5 +82,17 @@ public class Order_item {
     public void setPrice(double price)
     {
        this.price = price;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public int getLength() {
+        return length;
     }
 }

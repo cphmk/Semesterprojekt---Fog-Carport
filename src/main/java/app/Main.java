@@ -35,7 +35,7 @@ public class Main {
         // Routing
 
 
-        app.get("/", ctx -> ctx.render("indexx.html"));
+        app.get("/", ctx -> ctx.render("QuickBygFrontpage.html"));
         QuickBygController.addRoutes(app,connectionPool);
         UserController.addRoutes(app, connectionPool);
         AdminController.addRoutes(app, connectionPool);

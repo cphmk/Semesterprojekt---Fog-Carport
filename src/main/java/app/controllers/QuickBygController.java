@@ -2,14 +2,19 @@ package app.controllers;
 
 import app.entities.CarportDesign;
 import app.entities.ContactInformation;
+import app.entities.Order_item;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.CarportMapper;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
 import app.persistence.UserMapper;
+import app.services.Calculator;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class QuickBygController {
 
@@ -97,8 +102,10 @@ public class QuickBygController {
             }
         }
 
+        //Carport design
         CarportDesign carportDesign = ctx.sessionAttribute("Carport");
 
+        //Carport id
         int carport_id;
 
         //Opret carport design i db
@@ -108,10 +115,26 @@ public class QuickBygController {
             throw new RuntimeException(e);
         }
 
+        //Ordre id
+        int order_id;
+
         //Opret ordre i db
         try {
-           int order_id = OrderMapper.addOrder(carportDesign, user.getUser_id(), carport_id, connectionPool);
+           order_id = OrderMapper.addOrder(carportDesign, user.getUser_id(), carport_id, connectionPool);
            ctx.sessionAttribute("order_id",order_id);
+        } catch (DatabaseException e) {
+            throw new RuntimeException(e);
+        }
+
+        //Opret ordre items i db
+        // Calculate order items using Calculator
+        Calculator calculator = new Calculator(carportDesign, order_id, connectionPool);
+        calculator.calcCarport();
+        List<Order_item> orderItems = calculator.getOrderItems();
+
+        // Save order items in the database
+        try {
+            OrderMapper.addOrderItems(orderItems,connectionPool);
         } catch (DatabaseException e) {
             throw new RuntimeException(e);
         }
