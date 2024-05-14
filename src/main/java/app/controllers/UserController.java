@@ -27,6 +27,7 @@ public class UserController {
         app.get("viewAccount", ctx -> getOrder(ctx, connectionPool));
         app.post("viewAccount", ctx -> getOrder(ctx, connectionPool));
         app.post("deleteOrder", ctx -> deleteOrder(ctx, connectionPool));
+        app.post("acceptOffer", ctx -> acceptOffer(ctx, connectionPool));
     }
 
     private static void logout(Context ctx) {
@@ -63,7 +64,7 @@ public class UserController {
         // Check om bruger findes i DB med de angivne username + password
         try {
             User user = UserMapper.login(username, password, connectionPool);
-            user.setContactInformation(UserMapper.getContactInformation(user.getUser_id(),connectionPool));
+            user.setContactInformation(UserMapper.getContactInformation(user.getUser_id(), connectionPool));
             ctx.sessionAttribute("currentUser", user);
             if (user.getRole()) {
                 ctx.sessionAttribute("loggedIn", true);
@@ -108,4 +109,18 @@ public class UserController {
         }
         ctx.redirect("viewAccount");
     }
+
+    public static void acceptOffer(Context ctx, ConnectionPool connectionPool) {
+        int orderID = Integer.parseInt(ctx.formParam("order_id"));
+
+        try {
+            OrderMapper.updateOrderStatus(orderID, "Paid", connectionPool);
+
+        } catch (DatabaseException e) {
+            throw new RuntimeException(e);
+        }
+        ctx.redirect("viewAccount");
+    }
+
+
 }

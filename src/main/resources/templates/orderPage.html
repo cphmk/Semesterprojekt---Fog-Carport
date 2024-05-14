@@ -49,16 +49,31 @@
                     <h3 class="item-name">Carport med <span th:text="${order.comment}">Carport navn</span></h3>
                     <p class="item-price">$10.00</p>
                 </div>
-                <button type="submit" class="button remove-button" name="order_id" th:value="${order.order_id}"
+                <button th:if="${order.status=='PendingFog'}" type="submit" class="button remove-button" name="order_id"
+                        th:value="${order.order_id}"
                         formaction="deleteOrder">Remove
+                </button>
+
+                <button th:if="${order.status=='PendingUser'}" type="submit" class="button1"
+                        name="order_id" th:value="${order.order_id}"
+                        formaction="acceptOffer">Accept offer
+                </button>
+
+                <button th:if="${order.status=='PendingUser'}" type="submit" class="button remove-button"
+                        name="order_id" th:value="${order.order_id}"
+                        formaction="deleteOrder">Decline offer
+                </button>
+
+                <button th:if="${order.status=='Paid'}" class="button1" formaction="QuickByg">View order details
                 </button>
 
             </div>
             <div class="total-price">
                 Total: $25.00
             </div>
-
-            <button class="button" formaction="QuickByg">Continue Shopping</button>
+            <div class="buttons">
+                <button class="button" formaction="QuickByg">Continue Shopping</button>
+            </div>
         </form>
     </div>
 </div>
