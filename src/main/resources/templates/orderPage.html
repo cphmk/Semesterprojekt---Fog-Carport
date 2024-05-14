@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link href="../public/css/header.css" th:href="@{/css/header.css}" rel="stylesheet"/>
+    <link href="../public/css/FogStyles.css" th:href="@{/css/FogStyles.css}" rel="stylesheet"/>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.cdnfonts.com/css/sansation" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="/public/images/foglogo.png" th:href="@{/images/foglogo.png}">
+    <link href="../public/css/orderPage.css" th:href="@{/css/orderPage.css}" rel="stylesheet"/>
+</head>
+<body>
+
+<div class="header">
+    <div class="left-div">
+        <div class="logo">
+            <form>
+                <button class="logo-click" formaction="/">
+                    <img src="../public/images/foglogo.png" th:src="@{/images/foglogo.png}">
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="right-div">
+        <form th:action="${session.loggedIn ? (session.currentUser.role==false ? '/viewAccount' : '/adminView') : '/login'}"
+              method="post">
+            <div class="account">
+                <button class="account-click" type="submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="2em" height="2em" viewBox="0 0 25 25">
+                        <path fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M12.5 12a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM5 20v-1a4 4 0 0 1 4-4h7a4 4 0 0 1 4 4v1h0">
+                        </path>
+                    </svg>
+                    <span>Fog Konto</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="body">
+    <div class="container">
+        <form method="post">
+            <div class="item" th:each="order : ${session.Orders}">
+                <img src="item1.jpg" alt="Item 1">
+                <div class="item-details">
+                    <h3 class="item-name">Carport med <span th:text="${order.comment}">Carport navn</span></h3>
+                    <p class="item-price">$10.00</p>
+                </div>
+                <button th:if="${order.status=='PendingFog'}" type="submit" class="button remove-button" name="order_id"
+                        th:value="${order.order_id}"
+                        formaction="deleteOrder">Remove
+                </button>
+
+                <button th:if="${order.status=='PendingUser'}" type="submit" class="button1"
+                        name="order_id" th:value="${order.order_id}"
+                        formaction="acceptOffer">Accept offer
+                </button>
+
+                <button th:if="${order.status=='PendingUser'}" type="submit" class="button remove-button"
+                        name="order_id" th:value="${order.order_id}"
+                        formaction="deleteOrder">Decline offer
+                </button>
+
+                <button th:if="${order.status=='Paid'}" class="button1" formaction="QuickByg">View order details
+                </button>
+
+            </div>
+            <div class="total-price">
+                Total: $25.00
+            </div>
+            <div class="buttons">
+                <button class="button" formaction="QuickByg">Continue Shopping</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

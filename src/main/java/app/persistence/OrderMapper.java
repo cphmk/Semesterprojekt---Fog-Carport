@@ -21,6 +21,11 @@ public class OrderMapper {
 
             ResultSet rs = ps.executeQuery();
 
+            if (!rs.isBeforeFirst()) {
+                // No orders found, return empty list
+                return orders;
+            }
+
             while (rs.next()) {
                 int order_id = rs.getInt("order_id");
                 Date date = rs.getDate("date");
@@ -56,12 +61,34 @@ public class OrderMapper {
         }
     }
 
-    public static void addOrder(CarportDesign carportDesign, int user_id, int carport_id, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "INSERT INTO orders (status, date, user_id, comment, carport_id) VALUES (?,?,?,?,?)";
+    public static void deleteOrderItem(int orderID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "delete from order_item where order_id = ?";
 
         try {
             Connection connection = connectionPool.getConnection();
             PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, orderID);
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected == 0) {
+                throw new DatabaseException("Fejl i opdatering af en task");
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException("DB fejl", e.getMessage());
+        }
+    }
+
+
+    
+
+    public static int addOrder(CarportDesign carportDesign, int user_id, int carport_id, ConnectionPool connectionPool) throws DatabaseException {
+
+        String sql = "INSERT INTO orders (status, date, user_id, comment, carport_id) VALUES (?,?,?,?,?)";
+
+        try {
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             ps.setString(1, "Pending");
             ps.setDate(2, Date.valueOf(LocalDate.now()));
             ps.setInt(3, user_id);
@@ -73,8 +100,66 @@ public class OrderMapper {
                 throw new DatabaseException("Fejl i opdatering af en task");
             }
 
+            ResultSet generatedKeys = ps.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                return generatedKeys.getInt(1);
+            } else {
+                throw new DatabaseException("Fejl ved oprettelse af nyt order - kunne ikke finde genereret id");
+            }
+
         } catch (SQLException e) {
             throw new DatabaseException("DB fejl", e.getMessage());
         }
     }
+
+    public static ArrayList<Order> getOrdersByUserID(int userID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "select * from orders WHERE user_id = ?";
+
+        ArrayList<Order> orders = new ArrayList<>();
+
+        try {
+            Connection connection = connectionPool.getConnection();
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setInt(1, userID);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int order_id = rs.getInt("order_id");
+                Date date = rs.getDate("date");
+                String status = rs.getString("status");
+                int user_id = rs.getInt("user_id");
+                String comment = rs.getString("comment");
+                int carport_id = rs.getInt("carport_id");
+
+                orders.add(new Order(order_id, date, status, user_id, comment, carport_id));
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException("DB fejl", e.getMessage());
+        }
+        return orders;
+    }
+
+    public static void updateOrderStatus(int order_id, String status, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "update orders SET status = ?, WHERE order_id = ?";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setString(1, status);
+            ps.setInt(2, order_id);
+
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl ved opdatering af order status");
+            }
+        } catch (SQLException e) {
+            String msg = "Der er sket en fejl. Prøv igen";
+            throw new DatabaseException(msg, e.getMessage());
+        }
+    }
+
 }

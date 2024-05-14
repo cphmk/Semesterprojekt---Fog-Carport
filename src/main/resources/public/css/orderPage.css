@@ -1,0 +1,110 @@
+.body {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 80vh; /* Set height of body to full viewport height */
+}
+
+.container {
+    width: 1000px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    border: red solid;
+}
+
+.item {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    overflow: hidden;
+    display: flex; /* Use flexbox */
+}
+
+.item img {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+}
+
+.item-details {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    flex: 1; /* Take remaining space */
+}
+
+.item-name {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-weight: bold;
+    margin: 0;
+}
+
+.item-price {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    color: #888;
+    margin: 5px 0;
+}
+
+.total-price {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+.buttons {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    display: flex; /* Use flexbox */
+    justify-content: space-between; /* Space between buttons */
+    margin-top: 20px;
+}
+
+.button {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.button1 {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+
+
+.remove-button {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: #dc3545;
+}
