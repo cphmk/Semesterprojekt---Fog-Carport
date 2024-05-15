@@ -32,6 +32,7 @@ public class Calculator {
       calcPost();
       calcBeams();
       calcRafters();
+      calcShed();
     }
 
     // Stolperne = Post
@@ -63,6 +64,26 @@ public class Calculator {
     // Remmene = Beams
     // TODO: Beregn antallet af remme, og find længden på remmene dvs. variant.
     public void calcBeams() {
+
+        List<Variant> productVariants = null;
+        try {
+            // TODO: Finde ud af algoritme til når remmene er længere end 600 cm, så skal der bruger mere end to.
+            productVariants = MaterialMapper.getVariantsByProductIdAndMinLength(carportdesign.getCarport_length(), BEAMS, connectionPool);
+        } catch (SQLException | DatabaseException e) {
+            throw new RuntimeException(e);
+        }
+
+        int numberOfBeams = calcBeamsQuantity();
+
+        Variant productVariant = productVariants.get(0);
+        double price = numberOfBeams * (productVariant.getMaterial().getPrice() * (productVariant.getLength()/100));
+
+        Order_item orderItem = new Order_item(0, numberOfBeams, "Remme i sider, sadles ned i stolper", productVariant.getMaterial().getMaterial_id(), order_id, price);
+
+        orderItems.add(orderItem);
+    }
+
+    public static int calcBeamsQuantity() {
         int length = carportdesign.getCarport_length();
 
         int distanceBetweenPosts = 150;
@@ -74,20 +95,7 @@ public class Calculator {
         // Tilføj to ekstra remme i hver ende for at sikre tilstrækkelig støtte
         numberOfBeams += 2;
 
-        List<Variant> productVariants = null;
-        try {
-            // TODO: Finde ud af algoritme til når remmene er længere end 600 cm, så skal der bruger mere end to.
-            productVariants = MaterialMapper.getVariantsByProductIdAndMinLength(carportdesign.getCarport_length(), BEAMS, connectionPool);
-        } catch (SQLException | DatabaseException e) {
-            throw new RuntimeException(e);
-        }
-
-        Variant productVariant = productVariants.get(0);
-        double price = numberOfBeams * (productVariant.getMaterial().getPrice() * (productVariant.getLength()/100));
-
-        Order_item orderItem = new Order_item(0, numberOfBeams, "Remme i sider, sadles ned i stolper", productVariant.getMaterial().getMaterial_id(), order_id, price);
-
-        orderItems.add(orderItem);
+        return numberOfBeams;
     }
 
     /*public static int calcBeamsLength(CarportDesign carportdesign) {
@@ -108,6 +116,24 @@ public class Calculator {
     // TODO: Beregn antallet af Spærer, og find længden på spærene dvs. variant.
     public void calcRafters() {
 
+        List<Variant> productVariants;
+        try {
+            productVariants = MaterialMapper.getVariantsByProductIdAndMinLength(carportdesign.getCarport_length(), RAFTERS, connectionPool);
+        } catch (SQLException | DatabaseException e) {
+            throw new RuntimeException(e);
+        }
+
+        int numberOfRafters = calcRaftersQuantity();
+
+        Variant productVariant = productVariants.get(0);
+        double price = numberOfRafters * (productVariant.getMaterial().getPrice() * (productVariant.getLength()/100));
+
+        Order_item orderItem = new Order_item(0, numberOfRafters, "Spær, monteres på rem", productVariant.getMaterial().getMaterial_id(), order_id, price);
+
+        orderItems.add(orderItem);
+    }
+
+    public static int calcRaftersQuantity() {
         int width = carportdesign.getCarport_width();
         int length = carportdesign.getCarport_length();
 
@@ -124,19 +150,15 @@ public class Calculator {
         // Returner antallet af spær og længden af hver spær i et array
         //return new int[] { numberOfRafters, rafterLength };
 
-        List<Variant> productVariants;
-        try {
-            productVariants = MaterialMapper.getVariantsByProductIdAndMinLength(carportdesign.getCarport_length(), RAFTERS, connectionPool);
-        } catch (SQLException | DatabaseException e) {
-            throw new RuntimeException(e);
-        }
+        return numberOfRafters;
+    }
 
-        Variant productVariant = productVariants.get(0);
-        double price = numberOfRafters * (productVariant.getMaterial().getPrice() * (productVariant.getLength()/100));
+    public void calcShed() {
 
-        Order_item orderItem = new Order_item(0, numberOfRafters, "Spær, monteres på rem", productVariant.getMaterial().getMaterial_id(), order_id, price);
+    }
 
-        orderItems.add(orderItem);
+    public void calcShedWalls() {
+
     }
 
 
