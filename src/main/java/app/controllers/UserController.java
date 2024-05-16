@@ -20,7 +20,11 @@ public class UserController {
             ctx.sessionAttribute("redirectUrl", redirectUrl);
             ctx.render("loginpage.html");
         });
-        app.post("loginpage", ctx -> ctx.render("loginpage.html"));
+        app.post("loginpage", ctx -> {
+            String redirectUrl = ctx.req().getHeader("Referer");
+            ctx.sessionAttribute("redirectUrl", redirectUrl);
+            ctx.render("loginpage.html");
+        });
         app.get("logout", ctx -> logout(ctx));
         app.get("signup", ctx -> ctx.render("signup.html"));
         app.post("signup", ctx -> signup(ctx, connectionPool));
@@ -103,6 +107,7 @@ public class UserController {
         int orderID = Integer.parseInt(ctx.formParam("order_id"));
 
         try {
+            OrderMapper.deleteOrderItem(orderID, connectionPool);
             OrderMapper.deleteOrder(orderID, connectionPool);
         } catch (DatabaseException e) {
             throw new RuntimeException(e);

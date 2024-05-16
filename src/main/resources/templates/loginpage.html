@@ -16,15 +16,15 @@
         <img src="../public/images/byg-selv-carporte.jpg" th:src="@{/images/byg-selv-carporte.jpg}" alt="">
     </div>
     <div class="flex-box">
-        <h1>Log in page</h1>
+        <h1>Login page</h1>
         <form action="login" method="post">
             <div>
                 <label for="Username">Username</label>
-                <input type="text" name="username" id="Username" placeholder="Enter your username">
+                <input type="text" name="username" id="Username" placeholder="Enter your username" required>
             </div>
             <div>
                 <label for="Password">Password</label>
-                <input type="password" name="password" id="Password" placeholder="Enter your password">
+                <input type="password" name="password" id="Password" placeholder="Enter your password" required>
             </div>
             <h3 th:text="${message}"></h3>
 

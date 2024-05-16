@@ -22,10 +22,10 @@ public class QuickBygController {
         app.get("/QuickByg", ctx -> ctx.render("QuickBygFrontpage.html"));
         app.post("/QuickByg", ctx -> ctx.render("QuickBygFrontpage.html"));
         app.get("/QuickByg/FladtTag", ctx -> ctx.render("QuickBygFladtTag.html"));
-        app.get("/QuickByg/HoejtTag", ctx -> ctx.render("QuickBygOplysninger.html"));
+        app.get("/QuickByg/HoejtTag", ctx -> ctx.render("QuickBygHoejtTag.html"));
         app.post("/QuickByg/Carport", ctx -> saveCarport(ctx));
         app.get("/QuickByg/Oplysninger", ctx -> Oplysninger(ctx, connectionPool));
-        app.post("/QuickByg/Bestil",ctx -> OrderCarport(ctx,connectionPool));
+        app.post("/QuickByg/Bestil", ctx -> OrderCarport(ctx, connectionPool));
     }
 
     private static void saveCarport(Context ctx) {
@@ -39,14 +39,13 @@ public class QuickBygController {
 
         String tagPlader = ctx.formParam("carport_tag");
         if (tagPlader != null) {
-            carportDesign = new CarportDesign(carportWidth,carportLength,tagPlader,redskabsrumWidth,redskabsrumLength,kommentar);
-        }
-        else {
+            carportDesign = new CarportDesign(carportWidth, carportLength, tagPlader, redskabsrumWidth, redskabsrumLength, kommentar);
+        } else {
             String tagType = ctx.formParam("tagtype");
             int tagHældning = Integer.parseInt(ctx.formParam("taghældning"));
-            carportDesign = new CarportDesign(carportWidth,carportLength,tagType,tagHældning,redskabsrumWidth,redskabsrumLength,kommentar);
+            carportDesign = new CarportDesign(carportWidth, carportLength, tagType, tagHældning, redskabsrumWidth, redskabsrumLength, kommentar);
         }
-        ctx.sessionAttribute("Carport",carportDesign);
+        ctx.sessionAttribute("Carport", carportDesign);
 
 
         ctx.redirect("/QuickByg/Oplysninger");
@@ -60,13 +59,13 @@ public class QuickBygController {
             ctx.redirect("/login");
         }
 
-        if (user.getContactInformation() != null) {
-            ctx.attribute("name",user.getContactInformation().getName());
-            ctx.attribute("address",user.getContactInformation().getAddress());
-            ctx.attribute("postal_code",user.getContactInformation().getPostal_code());
-            ctx.attribute("city",user.getContactInformation().getCity());
-            ctx.attribute("phone_number",user.getContactInformation().getPhone_number());
-            ctx.attribute("email",user.getContactInformation().getEmail());
+        else if (user.getContactInformation() != null) {
+            ctx.attribute("name", user.getContactInformation().getName());
+            ctx.attribute("address", user.getContactInformation().getAddress());
+            ctx.attribute("postal_code", user.getContactInformation().getPostal_code());
+            ctx.attribute("city", user.getContactInformation().getCity());
+            ctx.attribute("phone_number", user.getContactInformation().getPhone_number());
+            ctx.attribute("email", user.getContactInformation().getEmail());
         }
 
         ctx.render("QuickBygOplysninger.html");
@@ -83,24 +82,24 @@ public class QuickBygController {
 
         //Opret eller opdater kontakt informationer
         User user = ctx.sessionAttribute("currentUser");
-        if (user.getContactInformation() == null) {
-            ContactInformation contactInformation = new ContactInformation(name,address,postal_code,city,phone_number,email);
-            user.setContactInformation(contactInformation);
 
-            try {
-                UserMapper.insertContactInformation(user,connectionPool);
-            } catch (DatabaseException e) {
-                throw new RuntimeException(e);
-            }
-        }
+            if (user.getContactInformation() == null) {
+                ContactInformation contactInformation = new ContactInformation(name, address, postal_code, city, phone_number, email);
+                user.setContactInformation(contactInformation);
 
-        else {
-            try {
-                UserMapper.updateContactInformation(user,connectionPool);
-            } catch (DatabaseException e) {
-                throw new RuntimeException(e);
+                try {
+                    UserMapper.insertContactInformation(user, connectionPool);
+                } catch (DatabaseException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                try {
+                    UserMapper.updateContactInformation(user, connectionPool);
+                } catch (DatabaseException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        }
+
 
         //Carport design
         CarportDesign carportDesign = ctx.sessionAttribute("Carport");
@@ -110,7 +109,7 @@ public class QuickBygController {
 
         //Opret carport design i db
         try {
-            carport_id = CarportMapper.createCarportDesign(carportDesign,connectionPool);
+            carport_id = CarportMapper.createCarportDesign(carportDesign, connectionPool);
         } catch (DatabaseException e) {
             throw new RuntimeException(e);
         }
@@ -120,8 +119,8 @@ public class QuickBygController {
 
         //Opret ordre i db
         try {
-           order_id = OrderMapper.addOrder(carportDesign, user.getUser_id(), carport_id, connectionPool);
-           ctx.sessionAttribute("order_id",order_id);
+            order_id = OrderMapper.addOrder(carportDesign, user.getUser_id(), carport_id, connectionPool);
+            ctx.sessionAttribute("order_id", order_id);
         } catch (DatabaseException e) {
             throw new RuntimeException(e);
         }
@@ -134,12 +133,12 @@ public class QuickBygController {
 
         // Save order items in the database
         try {
-            OrderMapper.addOrderItems(orderItems,connectionPool);
+            OrderMapper.addOrderItems(orderItems, connectionPool);
         } catch (DatabaseException e) {
             throw new RuntimeException(e);
         }
 
-        ctx.sessionAttribute("currentUser",user);
+        ctx.sessionAttribute("currentUser", user);
         ctx.render("QuickBygFinish.html");
     }
 

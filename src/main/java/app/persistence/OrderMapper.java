@@ -17,10 +17,10 @@ public class OrderMapper {
 
         ArrayList<Order> orders = new ArrayList<>();
 
-        try {
-            Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql);
-
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
             ResultSet rs = ps.executeQuery();
 
             if (!rs.isBeforeFirst()) {
@@ -45,23 +45,6 @@ public class OrderMapper {
         return orders;
     }
 
-    public static void deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "delete from orders where order_id = ?";
-
-        try {
-            Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql);
-            ps.setInt(1, orderID);
-
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1) {
-                throw new DatabaseException("Fejl i opdatering af en task");
-            }
-
-        } catch (SQLException e) {
-            throw new DatabaseException("DB fejl", e.getMessage());
-        }
-    }
 
     public static void addOrderItems(List<Order_item> orderItems, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "INSERT INTO order_item(variant_id, order_id, quantity, description, price) VALUES (?,?,?,?,?)";
@@ -108,7 +91,7 @@ public class OrderMapper {
         ) {
             ps.setInt(1, order_id);
 
-            try(ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     String name = rs.getString("name");
                     int length = rs.getInt("length");
@@ -126,17 +109,17 @@ public class OrderMapper {
         return orderItems;
     }
 
+    public static void deleteOrder(int orderID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "delete from orders where order_id = ?";
 
-    public static void deleteOrderItem(int orderID, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "delete from order_item where order_id = ?";
-
-        try {
-            Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql);
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
             ps.setInt(1, orderID);
 
             int rowsAffected = ps.executeUpdate();
-            if (rowsAffected == 0) {
+            if (rowsAffected != 1) {
                 throw new DatabaseException("Fejl i opdatering af en task");
             }
 
@@ -145,17 +128,30 @@ public class OrderMapper {
         }
     }
 
+    public static void deleteOrderItem(int orderID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "delete from order_item where order_id = ?";
 
-    
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setInt(1, orderID);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new DatabaseException("DB fejl", e.getMessage());
+        }
+    }
+
 
     public static int addOrder(CarportDesign carportDesign, int user_id, int carport_id, ConnectionPool connectionPool) throws DatabaseException {
 
         String sql = "INSERT INTO orders (status, date, user_id, comment, carport_id) VALUES (?,?,?,?,?)";
 
-        try {
-            Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            ps.setString(1, "Pending");
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        ) {
+            ps.setString(1, "PendingFog");
             ps.setDate(2, Date.valueOf(LocalDate.now()));
             ps.setInt(3, user_id);
             ps.setString(4, carportDesign.getComment());
@@ -183,10 +179,10 @@ public class OrderMapper {
 
         ArrayList<Order> orders = new ArrayList<>();
 
-        try {
-            Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql);
-
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
             ps.setInt(1, userID);
 
             ResultSet rs = ps.executeQuery();

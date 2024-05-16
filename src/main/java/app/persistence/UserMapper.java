@@ -75,7 +75,7 @@ public class UserMapper {
                 String email = rs.getString("email");
                 System.out.println("Contact information gathered");
 
-                return new ContactInformation(name,address,postal_code,city,phone_number,email);
+                return new ContactInformation(name, address, postal_code, city, phone_number, email);
             } else {
                 throw new DatabaseException("Fejl i login. Prøv igen");
             }
@@ -100,7 +100,7 @@ public class UserMapper {
             ps.setInt(5, user.getContactInformation().getPhone_number());
             ps.setString(6, user.getContactInformation().getEmail());
 
-            ps.setInt(7,user.getUser_id());
+            ps.setInt(7, user.getUser_id());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
@@ -129,7 +129,7 @@ public class UserMapper {
             ps.setInt(5, user.getContactInformation().getPhone_number());
             ps.setString(6, user.getContactInformation().getEmail());
 
-            ps.setInt(7,user.getUser_id());
+            ps.setInt(7, user.getUser_id());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
@@ -160,7 +160,7 @@ public class UserMapper {
                 int phone_number = rs.getInt("phone_number");
                 String email = rs.getString("email");
 
-                ContactInformation contactInformation = new ContactInformation(name,address,postal_code,city,phone_number,email);
+                ContactInformation contactInformation = new ContactInformation(name, address, postal_code, city, phone_number, email);
                 user.add(new User(user_id, username, contactInformation));
             }
         } catch (SQLException e) {
