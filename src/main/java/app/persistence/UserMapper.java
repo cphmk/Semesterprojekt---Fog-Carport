@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class UserMapper {
     public static User login(String username, String password, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "select * from users where username=? and password=?";
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
 
         try (
                 Connection connection = connectionPool.getConnection();
@@ -25,6 +25,7 @@ public class UserMapper {
                 System.out.println("Sign in success");
                 return new User(user_id, username, password, role);
             } else {
+                System.out.println(rs);
                 throw new DatabaseException("Fejl i login. Prøv igen");
             }
         } catch (SQLException e) {
@@ -32,8 +33,8 @@ public class UserMapper {
         }
     }
 
-    public static void createuser(String username, String password, String address, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into users (username, password, address) values (?,?,?)";
+    public static void createuser(String username, String password, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "insert into users (username, password) values (?,?)";
 
         try (
                 Connection connection = connectionPool.getConnection();
@@ -41,7 +42,6 @@ public class UserMapper {
         ) {
             ps.setString(1, username);
             ps.setString(2, password);
-            ps.setString(3, address);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
@@ -75,9 +75,9 @@ public class UserMapper {
                 String email = rs.getString("email");
                 System.out.println("Contact information gathered");
 
-                return new ContactInformation(name,address,postal_code,city,phone_number,email);
+                return new ContactInformation(name, address, postal_code, city, phone_number, email);
             } else {
-                throw new DatabaseException("Fejl i login. Prøv igen");
+                return null;
             }
         } catch (SQLException e) {
             throw new DatabaseException("DB fejl", e.getMessage());
@@ -100,7 +100,7 @@ public class UserMapper {
             ps.setInt(5, user.getContactInformation().getPhone_number());
             ps.setString(6, user.getContactInformation().getEmail());
 
-            ps.setInt(7,user.getUser_id());
+            ps.setInt(7, user.getUser_id());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
@@ -129,7 +129,7 @@ public class UserMapper {
             ps.setInt(5, user.getContactInformation().getPhone_number());
             ps.setString(6, user.getContactInformation().getEmail());
 
-            ps.setInt(7,user.getUser_id());
+            ps.setInt(7, user.getUser_id());
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
@@ -144,10 +144,10 @@ public class UserMapper {
     public static ArrayList<User> getAllUsers(ConnectionPool connectionPool) throws DatabaseException {
         ArrayList<User> user = new ArrayList<>();
         String sql = "SELECT * FROM users INNER JOIN contact ON users.user_id = contact.user_id WHERE users.admin = false";
-        try {
-            Connection connection = connectionPool.getConnection();
-            PreparedStatement ps = connection.prepareStatement(sql);
-
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 int user_id = rs.getInt("user_id");
@@ -160,7 +160,7 @@ public class UserMapper {
                 int phone_number = rs.getInt("phone_number");
                 String email = rs.getString("email");
 
-                ContactInformation contactInformation = new ContactInformation(name,address,postal_code,city,phone_number,email);
+                ContactInformation contactInformation = new ContactInformation(name, address, postal_code, city, phone_number, email);
                 user.add(new User(user_id, username, contactInformation));
             }
         } catch (SQLException e) {

@@ -2,25 +2,30 @@ package app.controllers;
 
 import app.entities.CarportDesign;
 import app.entities.ContactInformation;
+import app.entities.Order_item;
 import app.entities.User;
 import app.exceptions.DatabaseException;
 import app.persistence.CarportMapper;
 import app.persistence.ConnectionPool;
 import app.persistence.OrderMapper;
 import app.persistence.UserMapper;
+import app.services.Calculator;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+
+import java.sql.SQLException;
+import java.util.List;
 
 public class QuickBygController {
 
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.get("/QuickByg", ctx -> ctx.render("QuickBygFrontpage.html"));
+        app.post("/QuickByg", ctx -> ctx.render("QuickBygFrontpage.html"));
         app.get("/QuickByg/FladtTag", ctx -> ctx.render("QuickBygFladtTag.html"));
-        app.get("/QuickByg/HoejtTag", ctx -> ctx.render("QuickBygOplysninger.html"));
+        app.get("/QuickByg/HoejtTag", ctx -> ctx.render("QuickBygHoejtTag.html"));
         app.post("/QuickByg/Carport", ctx -> saveCarport(ctx));
         app.get("/QuickByg/Oplysninger", ctx -> Oplysninger(ctx, connectionPool));
-        app.post("/QuickByg/Bestil",ctx -> OrderCarport(ctx,connectionPool));
-
+        app.post("/QuickByg/Bestil", ctx -> OrderCarport(ctx, connectionPool));
     }
 
     private static void saveCarport(Context ctx) {
@@ -34,14 +39,13 @@ public class QuickBygController {
 
         String tagPlader = ctx.formParam("carport_tag");
         if (tagPlader != null) {
-            carportDesign = new CarportDesign(carportWidth,carportLength,tagPlader,redskabsrumWidth,redskabsrumLength,kommentar);
-        }
-        else {
+            carportDesign = new CarportDesign(carportWidth, carportLength, tagPlader, redskabsrumWidth, redskabsrumLength, kommentar);
+        } else {
             String tagType = ctx.formParam("tagtype");
             int tagHældning = Integer.parseInt(ctx.formParam("taghældning"));
-            carportDesign = new CarportDesign(carportWidth,carportLength,tagType,tagHældning,redskabsrumWidth,redskabsrumLength,kommentar);
+            carportDesign = new CarportDesign(carportWidth, carportLength, tagType, tagHældning, redskabsrumWidth, redskabsrumLength, kommentar);
         }
-        ctx.sessionAttribute("Carport",carportDesign);
+        ctx.sessionAttribute("Carport", carportDesign);
 
 
         ctx.redirect("/QuickByg/Oplysninger");
@@ -55,13 +59,13 @@ public class QuickBygController {
             ctx.redirect("/login");
         }
 
-        if (user.getContactInformation() != null) {
-            ctx.attribute("name",user.getContactInformation().getName());
-            ctx.attribute("address",user.getContactInformation().getAddress());
-            ctx.attribute("postal_code",user.getContactInformation().getPostal_code());
-            ctx.attribute("city",user.getContactInformation().getCity());
-            ctx.attribute("phone_number",user.getContactInformation().getPhone_number());
-            ctx.attribute("email",user.getContactInformation().getEmail());
+        else if (user.getContactInformation() != null) {
+            ctx.attribute("name", user.getContactInformation().getName());
+            ctx.attribute("address", user.getContactInformation().getAddress());
+            ctx.attribute("postal_code", user.getContactInformation().getPostal_code());
+            ctx.attribute("city", user.getContactInformation().getCity());
+            ctx.attribute("phone_number", user.getContactInformation().getPhone_number());
+            ctx.attribute("email", user.getContactInformation().getEmail());
         }
 
         ctx.render("QuickBygOplysninger.html");
@@ -78,44 +82,63 @@ public class QuickBygController {
 
         //Opret eller opdater kontakt informationer
         User user = ctx.sessionAttribute("currentUser");
-        if (user.getContactInformation() == null) {
-            ContactInformation contactInformation = new ContactInformation(name,address,postal_code,city,phone_number,email);
-            user.setContactInformation(contactInformation);
 
-            try {
-                UserMapper.insertContactInformation(user,connectionPool);
-            } catch (DatabaseException e) {
-                throw new RuntimeException(e);
+            if (user.getContactInformation() == null) {
+                ContactInformation contactInformation = new ContactInformation(name, address, postal_code, city, phone_number, email);
+                user.setContactInformation(contactInformation);
+
+                try {
+                    UserMapper.insertContactInformation(user, connectionPool);
+                } catch (DatabaseException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                try {
+                    UserMapper.updateContactInformation(user, connectionPool);
+                } catch (DatabaseException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        }
 
-        else {
-            try {
-                UserMapper.updateContactInformation(user,connectionPool);
-            } catch (DatabaseException e) {
-                throw new RuntimeException(e);
-            }
-        }
 
+        //Carport design
         CarportDesign carportDesign = ctx.sessionAttribute("Carport");
 
+        //Carport id
         int carport_id;
 
         //Opret carport design i db
         try {
-            carport_id = CarportMapper.createCarportDesign(carportDesign,connectionPool);
+            carport_id = CarportMapper.createCarportDesign(carportDesign, connectionPool);
         } catch (DatabaseException e) {
             throw new RuntimeException(e);
         }
+
+        //Ordre id
+        int order_id;
 
         //Opret ordre i db
         try {
-            OrderMapper.addOrder(carportDesign, user.getUser_id(), carport_id, connectionPool);
+            order_id = OrderMapper.addOrder(carportDesign, user.getUser_id(), carport_id, connectionPool);
+            ctx.sessionAttribute("order_id", order_id);
         } catch (DatabaseException e) {
             throw new RuntimeException(e);
         }
 
-        ctx.sessionAttribute("currentUser",user);
+        //Opret ordre items i db
+        // Calculate order items using Calculator
+        Calculator calculator = new Calculator(carportDesign, order_id, connectionPool);
+        calculator.calcCarport();
+        List<Order_item> orderItems = calculator.getOrderItems();
+
+        // Save order items in the database
+        try {
+            OrderMapper.addOrderItems(orderItems, connectionPool);
+        } catch (DatabaseException e) {
+            throw new RuntimeException(e);
+        }
+
+        ctx.sessionAttribute("currentUser", user);
         ctx.render("QuickBygFinish.html");
     }
 

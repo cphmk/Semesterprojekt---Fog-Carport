@@ -8,16 +8,13 @@ public class Material {
 
     private String unit;
 
-    private int width;
+    private int price;
 
-    private int length;
-
-    public Material(int material_id, String name, String unit, int width, int length) {
+    public Material(int material_id, String name, String unit, int price) {
         this.material_id = material_id;
         this.name = name;
         this.unit = unit;
-        this.width = width;
-        this.length = length;
+        this.price = price;
     }
 
     public int getMaterial_id() {
@@ -32,11 +29,5 @@ public class Material {
         return unit;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getLength() {
-        return length;
-    }
+    public int getPrice() { return price; }
 }
