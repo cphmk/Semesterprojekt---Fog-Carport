@@ -56,7 +56,15 @@ public class Calculator {
 
     public static int calcPostQuantity() {
         int length = carportdesign.getCarport_length(); // getLength() returns the length of the carport
-        return 2 * (2 + (length - 130) / 340);
+
+        //Hvis der ikke er et skur
+        if(carportdesign.getRedskabsrum_width() == 0) {
+            return 2 * (2 + (length - 130) / 340);
+        }
+        //Hvis der er et skur
+        else {
+            return (2 * (2 + (length - 130) / 340)) + 4;
+        }
     }
 
 
@@ -94,6 +102,18 @@ public class Calculator {
 
         // Tilføj to ekstra remme i hver ende for at sikre tilstrækkelig støtte
         numberOfBeams += 2;
+
+
+
+        /*
+        if(carportdesign.getCarport_length() <=600 {
+            return 2;
+        }
+        else {
+            return 3;
+        }
+
+        */
 
         return numberOfBeams;
     }
@@ -141,7 +161,7 @@ public class Calculator {
         int rafterSpacing = 60;
 
         // Beregn antallet af spær
-        int numberOfRafters = (int) Math.ceil((double) length / rafterSpacing);
+        //int numberOfRafters = (int) Math.ceil((double) length / rafterSpacing);
 
         // Længden af hvert spær,
         // sættes til bredden,da spærene strækker sig over hele bredden.
@@ -149,6 +169,8 @@ public class Calculator {
 
         // Returner antallet af spær og længden af hver spær i et array
         //return new int[] { numberOfRafters, rafterLength };
+
+        int numberOfRafters = (int) (Math.ceil((double) length / rafterSpacing)+2);
 
         return numberOfRafters;
     }

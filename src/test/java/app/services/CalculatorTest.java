@@ -21,7 +21,7 @@ class CalculatorTest {
         String DB = "";
 
         ConnectionPool connectionPool = ConnectionPool.getInstance(USER, PASSWORD, URL, DB);
-        CarportDesign carportDesign = new CarportDesign(600,780,"",0,0,"");
+        CarportDesign carportDesign = new CarportDesign(600,780,"",300,300,"");
         calculator = new Calculator(carportDesign,0,connectionPool);
     }
 
