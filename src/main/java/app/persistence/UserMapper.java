@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class UserMapper {
     public static User login(String username, String password, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "select * from users where username=? and password=?";
+        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
 
         try (
                 Connection connection = connectionPool.getConnection();
@@ -25,6 +25,7 @@ public class UserMapper {
                 System.out.println("Sign in success");
                 return new User(user_id, username, password, role);
             } else {
+                System.out.println(rs);
                 throw new DatabaseException("Fejl i login. Prøv igen");
             }
         } catch (SQLException e) {
@@ -32,8 +33,8 @@ public class UserMapper {
         }
     }
 
-    public static void createuser(String username, String password, String address, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "insert into users (username, password, address) values (?,?,?)";
+    public static void createuser(String username, String password, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "insert into users (username, password) values (?,?)";
 
         try (
                 Connection connection = connectionPool.getConnection();
@@ -41,7 +42,6 @@ public class UserMapper {
         ) {
             ps.setString(1, username);
             ps.setString(2, password);
-            ps.setString(3, address);
 
             int rowsAffected = ps.executeUpdate();
             if (rowsAffected != 1) {
@@ -77,7 +77,7 @@ public class UserMapper {
 
                 return new ContactInformation(name, address, postal_code, city, phone_number, email);
             } else {
-                throw new DatabaseException("Fejl i login. Prøv igen");
+                return null;
             }
         } catch (SQLException e) {
             throw new DatabaseException("DB fejl", e.getMessage());

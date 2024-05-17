@@ -1,6 +1,7 @@
 package app.controllers;
 
 
+import app.entities.ContactInformation;
 import app.entities.Order;
 import app.entities.User;
 import app.exceptions.DatabaseException;
@@ -43,12 +44,11 @@ public class UserController {
         String username = ctx.formParam("username");
         String password = ctx.formParam("password");
         String cpassword = ctx.formParam("cpassword");
-        String address = ctx.formParam("address");
 
         if (cpassword.equals(password)) {
             try {
-                UserMapper.createuser(username, password, address, connectionPool);
-                ctx.redirect("login");
+                UserMapper.createuser(username, password, connectionPool);
+                ctx.render("loginpage.html");
             } catch (DatabaseException e) {
                 ctx.attribute("message", "Username already exists");
                 ctx.render("signup.html");
@@ -65,10 +65,14 @@ public class UserController {
         String username = ctx.formParam("username");
         String password = ctx.formParam("password");
 
+
         // Check om bruger findes i DB med de angivne username + password
         try {
             User user = UserMapper.login(username, password, connectionPool);
-            user.setContactInformation(UserMapper.getContactInformation(user.getUser_id(), connectionPool));
+            ContactInformation contactInformation = UserMapper.getContactInformation(user.getUser_id(), connectionPool);
+            if (contactInformation != null) {
+                user.setContactInformation(contactInformation);
+            }
             ctx.sessionAttribute("currentUser", user);
             if (user.getRole()) {
                 ctx.sessionAttribute("loggedIn", true);
