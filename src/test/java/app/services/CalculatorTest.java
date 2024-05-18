@@ -14,7 +14,7 @@ class CalculatorTest {
     @BeforeAll
     static void setup() {
 
-        //Vi laver dem være tomme, og bruger enviroment variable til at forbinde i stedet.
+        //Vi lader dem være tomme, og bruger environment variabler til at forbinde i stedet.
         String USER = "";
         String PASSWORD = "";
         String URL = "";

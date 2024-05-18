@@ -27,6 +27,7 @@ public class UserController {
             ctx.render("loginpage.html");
         });
         app.get("logout", ctx -> logout(ctx));
+        app.post("logout", ctx -> logout(ctx));
         app.get("signup", ctx -> ctx.render("signup.html"));
         app.post("signup", ctx -> signup(ctx, connectionPool));
         app.get("viewAccount", ctx -> getOrder(ctx, connectionPool));
@@ -70,6 +71,7 @@ public class UserController {
         try {
             User user = UserMapper.login(username, password, connectionPool);
             ContactInformation contactInformation = UserMapper.getContactInformation(user.getUser_id(), connectionPool);
+            //Hvis der fandtes noget kontakt information, sæt det på brugeren.
             if (contactInformation != null) {
                 user.setContactInformation(contactInformation);
             }

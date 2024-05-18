@@ -45,8 +45,10 @@
 
 </div>
 <form method="post">
-    <button type="submit" formaction="adminView">Go back
-    </button>
+    <button th:if="${session.currentUser.role == false}" type="submit" formaction="viewAccount">Go back</button>
+    <button th:if="${session.currentUser.role == true}" type="submit" formaction="adminView">Go back</button>
+    <button th:if="${session.currentUser.role == true and order.status == 'PendingFog'}" type="submit" th:name="order_id" th:value="${order_id}" formaction="adminApprove">Approve</button>
 </form>
+
 </body>
 </html>

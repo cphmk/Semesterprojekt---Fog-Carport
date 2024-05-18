@@ -31,6 +31,7 @@
             <thead>
             <tr>
                 <th> Order</th>
+                <th> Status</th>
                 <th> Date</th>
                 <th> userid</th>
                 <th> Actions</th>
@@ -42,12 +43,13 @@
             </tr>
             <tr th:each="order : ${session.orders}">
                 <td><span th:text="${order.order_id}"> OrderID </span></td>
+                <td><span th:text="${order.status}"> Status </span></td>
                 <td><span th:text="${order.getDate()}"> Date </span></td>
                 <td><span th:text="${order.user_id}"> UserID </span></td>
                 <td>
-                    <button type="submit" name="orderID" th:value="${order.order_id}" formaction="viewOrder">View
+                    <button type="submit" name="order_id" th:value="${order.order_id}" formaction="viewOrder">View
                     </button>
-                    <button type="submit" name="orderID" th:value="${order.order_id}" formaction="deleteOrderAdmin">Delete
+                    <button type="submit" name="order_id" th:value="${order.order_id}" formaction="deleteOrderAdmin">Delete
                     </button>
                 </td>
             </tr>
