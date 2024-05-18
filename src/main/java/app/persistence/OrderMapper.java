@@ -35,8 +35,9 @@ public class OrderMapper {
                 int user_id = rs.getInt("user_id");
                 String comment = rs.getString("comment");
                 int carport_id = rs.getInt("carport_id");
+                double price = rs.getDouble("price");
 
-                orders.add(new Order(order_id, date, status, user_id, comment, carport_id));
+                orders.add(new Order(order_id, date, status, user_id, comment, carport_id, price));
             }
 
         } catch (SQLException e) {
@@ -193,8 +194,9 @@ public class OrderMapper {
                 int user_id = rs.getInt("user_id");
                 String comment = rs.getString("comment");
                 int carport_id = rs.getInt("carport_id");
+                double price = rs.getDouble("price");
 
-                orders.add(new Order(order_id, date, status, user_id, comment, carport_id));
+                orders.add(new Order(order_id, date, status, user_id, comment, carport_id, price));
             }
 
         } catch (SQLException e) {
@@ -205,13 +207,34 @@ public class OrderMapper {
 
 
     public static void updateOrderStatus(int order_id, String status, ConnectionPool connectionPool) throws DatabaseException {
-        String sql = "update orders SET status = ?, WHERE order_id = ?";
+        String sql = "update orders SET status = ? WHERE order_id = ?";
 
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql)
         ) {
             ps.setString(1, status);
+            ps.setInt(2, order_id);
+
+
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected != 1) {
+                throw new DatabaseException("Fejl ved opdatering af order status");
+            }
+        } catch (SQLException e) {
+            String msg = "Der er sket en fejl. Prøv igen";
+            throw new DatabaseException(msg, e.getMessage());
+        }
+    }
+
+    public static void updateOrderPrice(int order_id, double price, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "update orders SET price = ? WHERE order_id = ?";
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql)
+        ) {
+            ps.setDouble(1, price);
             ps.setInt(2, order_id);
 
 

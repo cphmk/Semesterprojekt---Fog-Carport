@@ -23,6 +23,7 @@ public class AdminController {
         app.post("deleteOrderAdmin", ctx -> deleteOrder(ctx, connectionPool));
         app.get("viewUsers", ctx -> getAllUsers(ctx, connectionPool));
         app.post("viewOrder", ctx -> viewOrder(ctx, connectionPool));
+        app.post("adminApprove", ctx -> approve(ctx,connectionPool));
     }
 
     public static void getAllOrders(Context ctx, ConnectionPool connectionPool) {
@@ -62,7 +63,7 @@ public class AdminController {
     }
 
     public static void viewOrder(Context ctx, ConnectionPool connectionPool) {
-        int orderID = Integer.parseInt(ctx.formParam("orderID"));
+        int orderID = Integer.parseInt(ctx.formParam("order_id"));
 
         Locale.setDefault(new Locale("US"));
 
@@ -86,6 +87,24 @@ public class AdminController {
             throw new RuntimeException(e);
         }
 
+        //Save orderID to the next page, so it knows which order to approve.
+        ctx.attribute("order_id",orderID);
+
+        // TODO: save the order status, so it can be used in showOrder.html
+
         ctx.render("showOrder.html");
+    }
+
+    public static void approve(Context ctx, ConnectionPool connectionPool) {
+        int orderID = Integer.parseInt(ctx.formParam("order_id"));
+
+        try {
+            OrderMapper.updateOrderStatus(orderID,"PendingUser",connectionPool);
+        } catch (DatabaseException e) {
+            throw new RuntimeException(e);
+        }
+
+        ctx.redirect("adminView");
+
     }
 }

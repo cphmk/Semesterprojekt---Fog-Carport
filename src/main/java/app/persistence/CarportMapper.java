@@ -12,10 +12,13 @@ public class CarportMapper {
 
     public static int createCarportDesign(CarportDesign carportDesign, ConnectionPool connectionPool) throws DatabaseException {
         String sql;
+        //Højt tag
         if (carportDesign.getRoof_tiles() == null) {
-            sql = "INSERT INTO carport_design (carport_width, carport_length, roof_trapeztype, shed_width, shed_length) VALUES (?,?,?,?,?)";
-        } else {
             sql = "INSERT INTO carport_design (carport_width, carport_length, roof_type, roof_incline, shed_width, shed_length) VALUES (?,?,?,?,?,?)";
+        }
+        //Fladt tag
+        else {
+            sql = "INSERT INTO carport_design (carport_width, carport_length, roof_trapeztype, shed_width, shed_length) VALUES (?,?,?,?,?)";
         }
 
         try (
@@ -24,15 +27,18 @@ public class CarportMapper {
         ) {
             ps.setInt(1, carportDesign.getCarport_width());
             ps.setInt(2, carportDesign.getCarport_length());
+            //Højt tag
             if (carportDesign.getRoof_tiles() == null) {
-                ps.setString(3, carportDesign.getRoof_tiles());
-                ps.setInt(4, carportDesign.getRedskabsrum_width());
-                ps.setInt(5, carportDesign.getRedskabsrum_length());
-            } else {
                 ps.setString(3, carportDesign.getRoof_type());
                 ps.setInt(4, carportDesign.getRoof_incline());
                 ps.setInt(5, carportDesign.getRedskabsrum_width());
                 ps.setInt(6, carportDesign.getRedskabsrum_length());
+            }
+            //Fladt tag
+            else {
+                ps.setString(3, carportDesign.getRoof_tiles());
+                ps.setInt(4, carportDesign.getRedskabsrum_width());
+                ps.setInt(5, carportDesign.getRedskabsrum_length());
             }
 
             int rowsAffected = ps.executeUpdate();
