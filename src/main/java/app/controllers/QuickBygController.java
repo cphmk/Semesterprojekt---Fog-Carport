@@ -21,11 +21,30 @@ public class QuickBygController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.get("/QuickByg", ctx -> ctx.render("QuickBygFrontpage.html"));
         app.post("/QuickByg", ctx -> ctx.render("QuickBygFrontpage.html"));
-        app.get("/QuickByg/FladtTag", ctx -> ctx.render("QuickBygFladtTag.html"));
-        app.get("/QuickByg/HoejtTag", ctx -> ctx.render("QuickBygHoejtTag.html"));
+        app.get("/QuickByg/FladtTag", ctx -> renderQuickbygPage("Fladt", ctx));
+        app.get("/QuickByg/HoejtTag", ctx -> renderQuickbygPage("Hoejt", ctx));
         app.post("/QuickByg/Carport", ctx -> saveCarport(ctx));
         app.get("/QuickByg/Oplysninger", ctx -> Oplysninger(ctx, connectionPool));
         app.post("/QuickByg/Bestil", ctx -> OrderCarport(ctx, connectionPool));
+    }
+
+    private static void renderQuickbygPage(String page, Context ctx) {
+        //Hvis man har udfyldt forms, tidligere
+        CarportDesign carportDesign = ctx.sessionAttribute("Carport");
+        if (carportDesign != null) {
+            ctx.redirect("/QuickByg/Oplysninger");
+        }
+
+        //Hvis man ikke har udfyldt forms, tidligere
+        else {
+
+            if (page.equals("Fladt")) {
+                ctx.render("QuickBygFladtTag.html");
+            }
+            else if (page.equals("Hoejt")) {
+                ctx.render("QuickBygHoejtTag.html");
+            }
+        }
     }
 
     private static void saveCarport(Context ctx) {

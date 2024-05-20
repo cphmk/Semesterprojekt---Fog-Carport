@@ -91,6 +91,13 @@ public class AdminController {
         ctx.attribute("order_id",orderID);
 
         // TODO: save the order status, so it can be used in showOrder.html
+        Order order = null;
+        try {
+            order = OrderMapper.getOrderByID(orderID,connectionPool);
+        } catch (DatabaseException e) {
+            throw new RuntimeException(e);
+        }
+        ctx.attribute("order", order);
 
         ctx.render("showOrder.html");
     }

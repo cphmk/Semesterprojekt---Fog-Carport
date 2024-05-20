@@ -205,6 +205,36 @@ public class OrderMapper {
         return orders;
     }
 
+    public static Order getOrderByID(int orderID, ConnectionPool connectionPool) throws DatabaseException {
+        String sql = "select * from orders WHERE order_id = ?";
+
+        Order order = null;
+
+        try (
+                Connection connection = connectionPool.getConnection();
+                PreparedStatement ps = connection.prepareStatement(sql);
+        ) {
+            ps.setInt(1, orderID);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                int order_id = rs.getInt("order_id");
+                Date date = rs.getDate("date");
+                String status = rs.getString("status");
+                int user_id = rs.getInt("user_id");
+                String comment = rs.getString("comment");
+                int carport_id = rs.getInt("carport_id");
+                double price = rs.getDouble("price");
+
+                order = new Order(order_id, date, status, user_id, comment, carport_id, price);
+            }
+
+        } catch (SQLException e) {
+            throw new DatabaseException("DB fejl", e.getMessage());
+        }
+        return order;
+    }
+
 
     public static void updateOrderStatus(int order_id, String status, ConnectionPool connectionPool) throws DatabaseException {
         String sql = "update orders SET status = ? WHERE order_id = ?";
