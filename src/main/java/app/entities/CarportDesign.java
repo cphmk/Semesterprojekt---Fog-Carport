@@ -71,4 +71,12 @@ public class CarportDesign {
     public String getComment() {
         return comment;
     }
+
+    public void setRedskabsrum_width(int redskabsrumWidth) {
+        this.redskabsrum_width = redskabsrumWidth;
+    }
+
+    public void setRedskabsrum_length(int redskabsrum_length) {
+        this.redskabsrum_length = redskabsrum_length;
+    }
 }
