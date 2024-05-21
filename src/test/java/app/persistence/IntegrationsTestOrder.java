@@ -17,12 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IntegrationsTestOrder {
 
-    //Vi lader dem være tomme, og bruger environment variabler til at forbinde i stedet.
-        /*String USER = "";
-        String PASSWORD = "";
-        String URL = "";
-        String DB = "testdatabase";*/
-
     static ConnectionPool connectionPool = ConnectionPool.getInstance("", "", "", "");
 
     @BeforeAll
@@ -62,8 +56,7 @@ class IntegrationsTestOrder {
     }
 
     @BeforeEach
-    void setupBeforeEach()
-    {
+    void setupBeforeEach() {
         try (Connection connection = connectionPool.getConnection())
         {
             try (Statement stmt = connection.createStatement())
@@ -94,7 +87,6 @@ class IntegrationsTestOrder {
             fail("Database connection failed");
         }
     }
-
 
     @Test
     void getOrders() {
@@ -146,7 +138,7 @@ class IntegrationsTestOrder {
         try {
             OrderMapper.updateOrderStatus(1,"PendingUser",connectionPool);
         } catch (DatabaseException e) {
-            throw new RuntimeException(e);
+            fail("Database fejl: " + e.getMessage());
         }
     }
 }
