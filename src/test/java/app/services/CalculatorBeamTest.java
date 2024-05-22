@@ -21,17 +21,17 @@ public class CalculatorBeamTest {
 
     @Test
     public void testCalcBeamsQuantity_LessThan600() {
-        int carportLength = 500; // Mindre end 600
-        int expected = 2; // Forventer 2 remme for en carport på 500 cm ifølge din tidligere beregning
-        int result = calculator.calcBeamsQuantity(carportLength);
+        int carportlength = 500; // Mindre end 600
+        int expected = 3; // Forventer 2 remme for en carport på 500 cm ifølge din tidligere beregning
+        int result = calculator.calcBeamsQuantity();
         assertEquals(expected, result);
     }
 
     @Test
-    public void testCalcBeamsQuantity_600OrMore() {
+    public void testCalcBeamsQuantity_600rMore() {
         int carportLength = 780; // 780 er mere end 600
         int expected = 3; // Forventer 3 remme for en carport på 780 cm ifølge din tidligere beregning
-        int result = calculator.calcBeamsQuantity(carportLength);
+        int result = calculator.calcBeamsQuantity();
         assertEquals(expected, result);
     }
 }
