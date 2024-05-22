@@ -1,20 +1,21 @@
 @startuml
 'https://plantuml.com/activity-diagram-beta
 
-[*] --> Frontpage
-Frontpage --> StandardCarportPage
-Frontpage --> LoginPage
-LoginPage --> Frontpage
-Frontpage --> CustomerMadeCarportPage
+[*] --> QuickBygFrontpage
+QuickBygFrontpage --> StandardCarportPage
+QuickBygFrontpage --> LoginPage
+LoginPage --> QuickBygFrontpage
+QuickBygFrontpage --> CustomerMadeCarportPage
 LoginPage --> SignupPage
 LoginPage <-- SignupPage
-CustomerMadeCarportPage -->  DesignPage
+CustomerMadeCarportPage -->  QuickBygFladtTag
+CustomerMadeCarportPage --> QuickBygHoejtTag
 
 
 
 
 state LoggedOn {
-Frontpage --> Basket
+QuickBygFrontpage --> Basket
 StandardCarportPage --> OrderPage
 DesignPage --> OrderPage
 OrderPage --> CheckoutPage

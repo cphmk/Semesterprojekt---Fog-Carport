@@ -18,13 +18,14 @@ if (Valg af type carport?) then (Custom)
 
 |Shop|
   :Forespørgsel;
+  |Beregningsystem|
+    :Indtaster forespørgseldata;
+    :Stykliste med pris;
 |Mailsystem|
-  :Send mail til sælger med forespørgsel;
+  :Send mail til sælger med stykliste og pris   ;
 |Sælger|
   :Mail til sælger;
-  |Beregningsystem|
-  :Indtaster forespørgseldata;
-  :Stykliste med pris;
+
   |Sælger|
   :Prisjustering;
   :Sælger sender konstruktionsbeskrivelse;
