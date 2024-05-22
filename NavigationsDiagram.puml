@@ -2,25 +2,30 @@
 'https://plantuml.com/activity-diagram-beta
 
 [*] --> QuickBygFrontpage
-QuickBygFrontpage --> StandardCarportPage
-QuickBygFrontpage --> LoginPage
-LoginPage --> QuickBygFrontpage
-QuickBygFrontpage --> CustomerMadeCarportPage
-LoginPage --> SignupPage
-LoginPage <-- SignupPage
-CustomerMadeCarportPage -->  QuickBygFladtTag
-CustomerMadeCarportPage --> QuickBygHoejtTag
-
-
-
+QuickBygFrontpage --> LoginPage :loginpage
+LoginPage --> QuickBygFrontpage :/QuickByg
+LoginPage --> Signup :signup
+LoginPage <-- Signup :loginpage
+state user{
+QuickBygFrontpage --> FogsEgenHjemmeside :href"link til fog"
+QuickBygFrontpage -->  QuickBygFladtTag :/QuickByg/FladtTag
+QuickBygFrontpage --> QuickBygHoejtTag :/QuickByg/HoejtTag
 
 state LoggedOn {
-QuickBygFrontpage --> Basket
-StandardCarportPage --> OrderPage
-DesignPage --> OrderPage
-OrderPage --> CheckoutPage
-CheckoutPage --> Basket
-
+QuickBygFrontpage --> orderPage :viewAccount
+QuickBygHoejtTag --> QuickBygOplysninger :/QuickByg/Oplysninger
+QuickBygFladtTag --> QuickBygOplysninger :/QuickByg/Oplysninger
+QuickBygOplysninger --> QuickBygFinish :/QuickByg/Bestil
+orderPage --> QuickBygFrontpage :logout
+}
 }
 
+state admin {
+LoginPage --> adminOrders :adminView
+adminOrders --> adminUsers : viewUsers
+adminUsers --> adminOrders :adminView
+adminOrders --> QuickBygFrontpage :logout
+adminUsers --> QuickBygFrontpage :logout
+
+}
 @enduml
