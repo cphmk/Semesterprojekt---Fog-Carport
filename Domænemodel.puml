@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+Object Kunde
+Object Order
+Object Shop
+Object Skur
+Object Bygningsmateriale
+Object Rem
+Object Stolpe
+Object Tag
+Object Carport
+
+Shop "*" <--> "1" Kunde
+Order "*" <--> "1" Kunde
+Order "*" <--> "1" Shop
+Order "*" <--> "1" Carport
+Tag "1" <--> "*" Carport
+Stolpe "1" <--> "*" Carport
+Rem "1" <--> "*" Carport
+Skur "0..n" <--> "1" Carport
+Bygningsmateriale "1" <--> "*" Tag
+Bygningsmateriale "1" <--> "*" Stolpe
+Bygningsmateriale "1" <--> "*" Rem
+@enduml

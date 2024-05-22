@@ -1,0 +1,67 @@
+@startuml
+
+|Kunde|
+if (Valg af type carport?) then (Standard)
+
+  if (Valg af tag?) then
+    :Fladt;
+  else
+    :Rejning;
+  endif
+
+  if (Skur) then (Ja)
+    :Mål og placering af skuret;
+    :Forespørgsel indsendes;
+  else (Nej)
+    :Forespørgsel indsendes;
+  endif
+
+|Shop|
+  :Forespørgsel;
+|Mailsystem|
+  :Send mail til sælger med forespørgsel;
+|Sælger|
+  :Mail til sælger;
+  |Beregningsystem|
+  :Indtaster forespørgseldata;
+  :Stykliste med pris;
+  |Sælger|
+  :Prisjustering;
+  :Sælger sender konstruktionsbeskrivelse;
+|Mailsystem|
+  :Send mail til kunden med konstruktionsbeskrivelse;
+|Kunde|
+  :Kunden modtager konstruktionsbeskrivelse;
+
+  if (Valg: Vil du acceptere tilbuddet?) then (nej)
+    :Kunden vælger ikke at fortsætte;
+  else (ja)
+|Shop|
+    :Ordrebekræftelse;
+|Sælger|
+|Mailsystem|
+    :Send mail til fog, med ordrebekræftelse;
+|Mailsystem|
+|Shop|
+    :Fog sender ordre afsted med stykliste og materialer;
+|Kunde|
+    :Kunde modtager produktet med stykliste;
+  endif
+
+else (Custom)
+  :Kunden vælger og bestiller en carport model;
+|Shop|
+  :Ordrebekræftelse;
+|Sælger|
+|Mailsystem|
+  :Send mail til fog, med ordrebekræftelse;
+|Mailsystem|
+|Shop|
+  :Fog sender ordre afsted med stykliste og materialer;
+|Kunde|
+  :Kunde modtager produktet med stykliste;
+endif
+
+|Kunde|
+stop
+@enduml
