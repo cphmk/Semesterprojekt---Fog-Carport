@@ -1,0 +1,25 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+[*] --> Frontpage
+Frontpage --> StandardCarportPage
+Frontpage --> LoginPage
+LoginPage --> Frontpage
+Frontpage --> CustomerMadeCarportPage
+LoginPage --> SignupPage
+LoginPage <-- SignupPage
+CustomerMadeCarportPage -->  DesignPage
+
+
+
+
+state LoggedOn {
+Frontpage --> Basket
+StandardCarportPage --> OrderPage
+DesignPage --> OrderPage
+OrderPage --> CheckoutPage
+CheckoutPage --> Basket
+
+}
+
+@enduml
