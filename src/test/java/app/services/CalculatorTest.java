@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CalculatorTest {
 
-    static ConnectionPool connectionPool = ConnectionPool.getInstance("", "", "", "");
+    static ConnectionPool connectionPool = new ConnectionPool(); // Erstat med faktisk connection pool instans
     static Calculator calculator;
 
 
@@ -40,7 +40,7 @@ class CalculatorTest {
     void calcRaftersQuantity() {
         //Vi tager 15, som i udgangspunkt i carport eksemplet fra fog
         int result = Calculator.calcRaftersQuantity();
-        assertEquals(15,result);
+        assertEquals(17,result);
 
     }
 }

@@ -14,6 +14,7 @@ public class Calculator {
     private final int POSTS = 6;
     private final int RAFTERS = 5;
     private final int BEAMS = 5;
+    private final int SHED = 0;
     private List<Order_item> orderItems = new ArrayList<>();
     private static CarportDesign carportdesign;
     private ConnectionPool connectionPool;
@@ -72,7 +73,7 @@ public class Calculator {
         } catch (SQLException | DatabaseException e) {
             throw new RuntimeException(e);
         }
-        int numberOfBeams = calcBeamsQuantity(carportdesign.getCarport_length());
+        int numberOfBeams = calcBeamsQuantity();
         Variant productVariant = productVariants.get(0);
         double price = numberOfBeams * (productVariant.getMaterial().getPrice() * (productVariant.getLength() / 100));
         Order_item orderItem = new Order_item(0, numberOfBeams, "Remme i sider, sadles ned i stolper", productVariant.getMaterial().getMaterial_id(), order_id, price);
@@ -82,17 +83,17 @@ public class Calculator {
 
 
     // TODO: Beregn antallet af remme til Carporten
-    public static int calcBeamsQuantity(int carportLength) {
+    public static int calcBeamsQuantity() {
         int distanceOfBeams = 600; // længden af de vandrette bjælker (remme),
         int numberOfBeams = 2; // Starter med to remme (en på hver side)
 
         // Hvis carportens længde overstiger den remmens længde
         // på hver side, tilføj ekstra remme.
-        if (carportLength > distanceOfBeams) {
+        if (carportdesign.getCarport_length() > distanceOfBeams) {
             numberOfBeams += (carportdesign.getCarport_length() - distanceOfBeams + distanceOfBeams - 1) / distanceOfBeams;
         }
 
-        System.out.println("Carport Length: " + carportLength);
+        System.out.println("Carport Length: " + carportdesign.getCarport_length());
         System.out.println("Number of Beams: " + numberOfBeams);
 
         return numberOfBeams;
@@ -147,10 +148,45 @@ public class Calculator {
         double shedBeamsPrice = calcShedBeamsPrice(shedBeamsQuantity);
         double shedRaftersPrice = calcShedRaftersPrice(shedRaftersQuantity);
 
+
+        /*
+        //Posts
+        List<Variant> productVariantsPosts;
+        try {
+            productVariantsPosts = MaterialMapper.getVariantsByProductIdAndMinLength(carportdesign.getCarport_length(), POSTS, connectionPool);
+        } catch (SQLException | DatabaseException e) {
+            throw new RuntimeException(e);
+        }
+        int numberOfRafters1 = calcRaftersQuantity();
+        Variant productVariant1 = productVariantsPosts.get(0);
+        double price1 = numberOfRafters1 * (productVariant1.getMaterial().getPrice() * (productVariant1.getLength() / 100));
+
+        //Beams
+        List<Variant> productVariantsBeams;
+        try {
+            productVariantsBeams = MaterialMapper.getVariantsByProductIdAndMinLength(carportdesign.getCarport_length(), BEAMS, connectionPool);
+        } catch (SQLException | DatabaseException e) {
+            throw new RuntimeException(e);
+        }
+        int numberOfRafters2 = calcRaftersQuantity();
+        Variant productVariant2 = productVariantsBeams.get(0);
+        double price2 = numberOfRafters2 * (productVariant2.getMaterial().getPrice() * (productVariant2.getLength() / 100));
+
+        //Rafters
+        List<Variant> productVariantsRafters;
+        try {
+            productVariantsRafters = MaterialMapper.getVariantsByProductIdAndMinLength(carportdesign.getCarport_length(), RAFTERS, connectionPool);
+        } catch (SQLException | DatabaseException e) {
+            throw new RuntimeException(e);
+        }
+        int numberOfRafters3 = calcRaftersQuantity();
+        Variant productVariant3 = productVariantsRafters.get(0);
+        double price3 = numberOfRafters3 * (productVariant3.getMaterial().getPrice() * (productVariant3.getLength() / 100));
+
         // Tilføj skurets komponenter til orderItems-listen
-        orderItems.add(new Order_item(0, shedPostQuantity, "Stolper til skur", 0, order_id, shedPostPrice));
-        orderItems.add(new Order_item(0, shedBeamsQuantity, "Remme til skur", 0, order_id, shedBeamsPrice));
-        orderItems.add(new Order_item(0, shedRaftersQuantity, "Spær til skur", 0, order_id, shedRaftersPrice));
+        orderItems.add(new Order_item(0, shedPostQuantity, "Stolper til skur", , order_id, shedPostPrice));
+        orderItems.add(new Order_item(0, shedBeamsQuantity, "Remme til skur", BEAMS, order_id, shedBeamsPrice));
+        orderItems.add(new Order_item(0, shedRaftersQuantity, "Spær til skur", RAFTERS, order_id, shedRaftersPrice));*/
     }
 
 
