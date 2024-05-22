@@ -44,19 +44,19 @@
     <div class="container">
         <form method="post">
             <div class="item" th:each="order : ${session.Orders}">
-                <img src="item1.jpg" alt="Item 1">
+                <img src="item1.jpg" alt="Carport 1">
                 <div class="item-details">
-                    <h3 class="item-name">Carport med <span th:text="${order.comment}">Carport navn</span></h3>
-                    <p class="item-price">$10.00</p>
+                    <h3 class="item-name">Carport med <span th:text="${order.comment}">Carport navn</span> </h3>
+                    <p class="item-price" th:text="'$' + ${order.price}">$0.00</p>
                 </div>
-                <button th:if="${order.status=='PendingFog'}" type="submit" class="button remove-button" name="order_id"
-                        th:value="${order.order_id}"
+                <button th:if="${order.status=='PendingFog'}" type="submit" class="button remove-button"
+                        name="order_id" th:value="${order.order_id}"
                         formaction="deleteOrder">Remove
                 </button>
 
                 <button th:if="${order.status=='PendingUser'}" type="submit" class="button1"
                         name="order_id" th:value="${order.order_id}"
-                        formaction="acceptOffer">Accept offer
+                        formaction="acceptOffer">Accept offer (Pay)
                 </button>
 
                 <button th:if="${order.status=='PendingUser'}" type="submit" class="button remove-button"
@@ -64,7 +64,9 @@
                         formaction="deleteOrder">Decline offer
                 </button>
 
-                <button th:if="${order.status=='Paid'}" class="button1" formaction="QuickByg">View order details
+                <button th:if="${order.status=='Paid'}" class="button1"
+                        name="order_id" th:value="${order.order_id}"
+                        formaction="viewOrder">View order details
                 </button>
 
             </div>
@@ -73,6 +75,9 @@
             </div>
             <div class="buttons">
                 <button class="button" formaction="QuickByg">Continue Shopping</button>
+            </div>
+            <div class="buttons">
+                <button class="button" formaction="logout">Logout</button>
             </div>
         </form>
     </div>

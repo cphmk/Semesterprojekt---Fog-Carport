@@ -9,13 +9,15 @@ public class Order {
     private int user_id;
     private String comment;
     private int carport_id;
-    public Order(int order_id, Date date, String status, int user_id, String comment, int carport_id) {
+    private double price;
+    public Order(int order_id, Date date, String status, int user_id, String comment, int carport_id, double price) {
         this.order_id = order_id;
         this.date = date;
         this.status = status;
         this.user_id = user_id;
         this.comment = comment;
         this.carport_id = carport_id;
+        this.price = price;
     }
 
     public int getOrder_id() {
@@ -64,5 +66,13 @@ public class Order {
 
     public void setCarport_id(int carport_id) {
         this.carport_id = carport_id;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

@@ -9,9 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-
 public class Calculator {
 
     private final int POSTS = 6;
@@ -21,171 +18,214 @@ public class Calculator {
     private static CarportDesign carportdesign;
     private ConnectionPool connectionPool;
     private int order_id;
-    public Calculator(CarportDesign carportdesign, int order_id, ConnectionPool connectionPool)
-    {
+
+    public Calculator(CarportDesign carportdesign, int order_id, ConnectionPool connectionPool) {
         this.order_id = order_id;
         this.carportdesign = carportdesign;
         this.connectionPool = connectionPool;
     }
 
     public void calcCarport() {
-      calcPost();
-      calcBeams();
-      calcRafters();
-      calcShed();
+        calcPost();
+        calcBeams();
+        calcRafters();
+        calcShed();
     }
 
-    // Stolperne = Post
-    // TODO: Beregn antallet af stolper, og find længden på stolperne dvs. variant.
+    // TODO: Beregner prisen på Stolper, opretter en ordrelinje med denne information
+    //  og tilføjer den til en liste af ordrelinjer.
     public void calcPost() {
-
         int quantity = calcPostQuantity();
         List<Variant> productVariants = null;
         try {
-            productVariants = MaterialMapper.getVariantsByProductIdAndMinLength(0,POSTS, connectionPool);
+            productVariants = MaterialMapper.getVariantsByProductIdAndMinLength(0, POSTS, connectionPool);
         } catch (SQLException | DatabaseException e) {
             throw new RuntimeException(e);
         }
         Variant productVariant = productVariants.get(0);
-          double price = quantity * (productVariant.getMaterial().getPrice() * (productVariant.getLength()/100));
-        // Assuming price is a double
-        Order_item orderItem = new Order_item(0, quantity, "Stolper nedgraves 90 cm i jorden", productVariant.getMaterial().getMaterial_id(), order_id, price);
+        double price = quantity * (productVariant.getMaterial().getPrice() * (productVariant.getLength() / 100));
 
+        Order_item orderItem = new Order_item(0, quantity, "Stolper nedgraves 90 cm i jorden", productVariant.getMaterial().getMaterial_id(), order_id, price);
         orderItems.add(orderItem);
     }
 
-    public static int calcPostQuantity() {
-        int length = carportdesign.getCarport_length(); // getLength() returns the length of the carport
 
-        //Hvis der ikke er et skur
-        if(carportdesign.getRedskabsrum_width() == 0) {
+
+    // TODO: Beregn antallet af stolper til Carporten
+    public static int calcPostQuantity() {
+        int length = carportdesign.getCarport_length();
+        if (carportdesign.getRedskabsrum_width() == 0) {
             return 2 * (2 + (length - 130) / 340);
-        }
-        //Hvis der er et skur
-        else {
+        } else {
             return (2 * (2 + (length - 130) / 340)) + 4;
         }
     }
 
 
 
-    // Remmene = Beams
-    // TODO: Beregn antallet af remme, og find længden på remmene dvs. variant.
+    // TODO: Beregner prisen på Remme, opretter en ordrelinje med denne information
+    //  og tilføjer den til en liste af ordrelinjer.
     public void calcBeams() {
-
         List<Variant> productVariants = null;
         try {
-            // TODO: Finde ud af algoritme til når remmene er længere end 600 cm, så skal der bruger mere end to.
             productVariants = MaterialMapper.getVariantsByProductIdAndMinLength(carportdesign.getCarport_length(), BEAMS, connectionPool);
         } catch (SQLException | DatabaseException e) {
             throw new RuntimeException(e);
         }
-
-        int numberOfBeams = calcBeamsQuantity();
-
+        int numberOfBeams = calcBeamsQuantity(carportdesign.getCarport_length());
         Variant productVariant = productVariants.get(0);
-        double price = numberOfBeams * (productVariant.getMaterial().getPrice() * (productVariant.getLength()/100));
-
+        double price = numberOfBeams * (productVariant.getMaterial().getPrice() * (productVariant.getLength() / 100));
         Order_item orderItem = new Order_item(0, numberOfBeams, "Remme i sider, sadles ned i stolper", productVariant.getMaterial().getMaterial_id(), order_id, price);
-
         orderItems.add(orderItem);
     }
 
-    public static int calcBeamsQuantity() {
-        int length = carportdesign.getCarport_length();
-
-        int distanceBetweenPosts = 150;
-
-        int distanceBetweenBeams = 340;
-
-        int numberOfBeams = 2 * (2 + (length - 130) / distanceBetweenBeams);
-
-        // Tilføj to ekstra remme i hver ende for at sikre tilstrækkelig støtte
-        numberOfBeams += 2;
 
 
+    // TODO: Beregn antallet af remme til Carporten
+    public static int calcBeamsQuantity(int carportLength) {
+        int distanceOfBeams = 600; // længden af de vandrette bjælker (remme),
+        int numberOfBeams = 2; // Starter med to remme (en på hver side)
 
-        /*
-        if(carportdesign.getCarport_length() <=600 {
-            return 2;
-        }
-        else {
-            return 3;
+        // Hvis carportens længde overstiger den remmens længde
+        // på hver side, tilføj ekstra remme.
+        if (carportLength > distanceOfBeams) {
+            numberOfBeams += (carportdesign.getCarport_length() - distanceOfBeams + distanceOfBeams - 1) / distanceOfBeams;
         }
 
-        */
+        System.out.println("Carport Length: " + carportLength);
+        System.out.println("Number of Beams: " + numberOfBeams);
 
         return numberOfBeams;
     }
 
-    /*public static int calcBeamsLength(CarportDesign carportdesign) {
-        int length = carportdesign.getCarport_length();
-        int postsQuantity = calcPostQuantity();
-
-        // Afstanden mellem de ydre stolper (inklusive de to ekstra stolper i hver ende)
-        int outerPostsDistance = (postsQuantity - 1) * 340;
-
-        // Den samlede længde af remmen er carportens længde minus afstanden mellem de ydre stolper
-        int beamsLength = length - outerPostsDistance;
-
-        return beamsLength;
-    }*/
 
 
-    // Spærene = Rafters
-    // TODO: Beregn antallet af Spærer, og find længden på spærene dvs. variant.
+
+    // TODO: Beregner prisen på spærene, opretter en ordrelinje med denne information
+    //  og tilføjer den til en liste af ordrelinjer.
     public void calcRafters() {
-
         List<Variant> productVariants;
         try {
             productVariants = MaterialMapper.getVariantsByProductIdAndMinLength(carportdesign.getCarport_length(), RAFTERS, connectionPool);
         } catch (SQLException | DatabaseException e) {
             throw new RuntimeException(e);
         }
-
         int numberOfRafters = calcRaftersQuantity();
-
         Variant productVariant = productVariants.get(0);
-        double price = numberOfRafters * (productVariant.getMaterial().getPrice() * (productVariant.getLength()/100));
-
+        double price = numberOfRafters * (productVariant.getMaterial().getPrice() * (productVariant.getLength() / 100));
         Order_item orderItem = new Order_item(0, numberOfRafters, "Spær, monteres på rem", productVariant.getMaterial().getMaterial_id(), order_id, price);
-
         orderItems.add(orderItem);
     }
 
+
+
+    // TODO: Beregner antallet af spær til Carporten.
     public static int calcRaftersQuantity() {
         int width = carportdesign.getCarport_width();
         int length = carportdesign.getCarport_length();
-
-        // Her er afstanden mellem hvert spær på tværs, af carportens længde.
-        int rafterSpacing = 60;
-
-        // Beregn antallet af spær
-        //int numberOfRafters = (int) Math.ceil((double) length / rafterSpacing);
-
-        // Længden af hvert spær,
-        // sættes til bredden,da spærene strækker sig over hele bredden.
+        int rafterSpacing = 55;
         int rafterLength = width;
-
-        // Returner antallet af spær og længden af hver spær i et array
-        //return new int[] { numberOfRafters, rafterLength };
-
-        int numberOfRafters = (int) (Math.ceil((double) length / rafterSpacing)+2);
-
+        int numberOfRafters = (int) (Math.ceil((double) length / rafterSpacing) + 2);
         return numberOfRafters;
     }
 
+
+
+    //TODO: Beregner kun materialerne til skuret
+    // og tilføjer dem til orderItems-listen.
     public void calcShed() {
+        int shedWidth = carportdesign.getRedskabsrum_width();
+        int shedLength = carportdesign.getRedskabsrum_length();
 
+        // Beregn antal stolper, remme og spær med skuret
+        int shedPostQuantity = calcShedPostQuantity(shedWidth, shedLength);
+        int shedBeamsQuantity = calcShedBeamsQuantity(shedWidth, shedLength);
+        int shedRaftersQuantity = calcShedRaftersQuantity(shedWidth);
+
+        // Beregn prisen for stolper, remme og spær til skuret
+        double shedPostPrice = calcShedPostPrice(shedPostQuantity);
+        double shedBeamsPrice = calcShedBeamsPrice(shedBeamsQuantity);
+        double shedRaftersPrice = calcShedRaftersPrice(shedRaftersQuantity);
+
+        // Tilføj skurets komponenter til orderItems-listen
+        orderItems.add(new Order_item(0, shedPostQuantity, "Stolper til skur", 0, order_id, shedPostPrice));
+        orderItems.add(new Order_item(0, shedBeamsQuantity, "Remme til skur", 0, order_id, shedBeamsPrice));
+        orderItems.add(new Order_item(0, shedRaftersQuantity, "Spær til skur", 0, order_id, shedRaftersPrice));
     }
 
-    public void calcShedWalls() {
 
+
+    // TODO: Beregner antallet af stolper til skur
+    public int calcShedPostQuantity(int shedWidth, int shedLength) {
+        int postSpacing = 190; // Afstanden mellem hver stolpe i skuret
+        // Antal stolper i længden af skuret
+        int lengthPosts = 2 + (shedLength - 130) / postSpacing;
+        // Antal stolper i bredden af skuret
+        int widthPosts = 2 + (shedWidth - 130) / postSpacing;
+        // Samlet antal stolper
+        return 2 * (lengthPosts + widthPosts);
     }
 
 
-    public List<Order_item> getOrderItems()
-    {
+
+    // TODO Beregner antallet af remme til skur
+    public int calcShedBeamsQuantity(int shedWidth, int shedLength) {
+
+        // Længden af en enkelt rem er 480 cm
+        int beamLength = 480;
+
+        // Beregning af antal remme langs skurets bredde og længde.
+        int beamsAlongWidth = (int) Math.ceil((double) shedWidth / beamLength);
+        int beamsAlongLength = (int) Math.ceil((double) shedLength / beamLength);
+
+        // Vi skal bruge mindst to remme på hver side,
+        // så vi tager det højeste antal som minimum
+        int totalBeams = Math.max(2 * beamsAlongWidth, 2 * beamsAlongLength);
+
+        return totalBeams;
+    }
+
+
+
+
+    // TODO Beregner antallet af spær til skur
+    public int calcShedRaftersQuantity(int shedWidth) {
+
+        return (int) Math.ceil((double) shedWidth / 55) + 1; // Vi skal inkludere begge ender
+    }
+
+
+
+    // TODO: Beregner prisen for en stolpe til skuret
+    public double calcShedPostPrice(int shedPostQuantity) {
+        // Prisen for en stolpe
+        double postPrice = 36.95; // Eksempelpris, erstat med den faktiske pris
+        return shedPostQuantity * postPrice;
+    }
+
+
+
+    // TODO: Beregner prisen for en rem til skuret
+    public double calcShedBeamsPrice(int shedBeamsQuantity) {
+        double beamPrice = 41.5;
+        return shedBeamsQuantity * beamPrice;
+    }
+
+
+
+    // TODO: Beregner prisen for en spær til skuret
+    public double calcShedRaftersPrice(int shedRaftersQuantity) {
+        // Prisen for et spær
+        double rafterPrice = 41.5;
+        return shedRaftersQuantity * rafterPrice;
+    }
+
+
+
+
+    public List<Order_item> getOrderItems() {
         return orderItems;
     }
 }
+
+

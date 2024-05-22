@@ -65,7 +65,7 @@
                 <div class="form-box">
                     <label for="carport_bredde">Carport bredde*</label>
                     <select name="carport_bredde" id="carport_bredde" required>
-                        <option selected disabled>Vælg bredde</option>
+                        <option selected disabled value="">Vælg bredde</option>
                         <option value="240">240 cm</option>
                         <option value="270">270 cm</option>
                         <option value="300">300 cm</option>
@@ -84,7 +84,7 @@
                 <div class="form-box">
                     <label for="carport_længde">Carport længde*</label>
                     <select name="carport_længde" id="carport_længde" required>
-                        <option selected disabled>Vælg længde</option>
+                        <option selected disabled value="">Vælg længde</option>
                         <option value="240">240 cm</option>
                         <option value="270">270 cm</option>
                         <option value="300">300 cm</option>
@@ -97,6 +97,7 @@
                         <option value="510">510 cm</option>
                         <option value="540">540 cm</option>
                         <option value="570">570 cm</option>
+                        <option value="600">600 cm</option>
                         <option value="630">630 cm</option>
                         <option value="660">660 cm</option>
                         <option value="690">690 cm</option>
@@ -108,18 +109,18 @@
                 <div class="form-box">
                     <label for="tagtype">Tagtyper*</label>
                     <select name="tagtype" id="tagtype" required>
-                        <option selected disabled>Vælg tagtype</option>
-                        <option>Betontagsten - Koralrød</option>
-                        <option>Betontagsten - Sort</option>
-                        <option>Eternittag B6 - Grå</option>
-                        <option>Eternittag B6 - Sortblå</option>
-                        <option>Eternittag B7 - Sortblå</option>
+                        <option selected disabled value="">Vælg tagtype</option>
+                        <option value="Betontagsten - Koralrød">Betontagsten - Koralrød</option>
+                        <option value="Betontagsten - Sort">Betontagsten - Sort</option>
+                        <option value="Eternittag B6 - Grå">Eternittag B6 - Grå</option>
+                        <option value="Eternittag B6 - Sortblå">Eternittag B6 - Sortblå</option>
+                        <option value="Eternittag B7 - Sortblå">Eternittag B7 - Sortblå</option>
                     </select>
                 </div>
                 <div class="form-box">
                     <label for="taghældning">Taghældning*</label>
                     <select name="taghældning" id="taghældning" required>
-                        <option selected disabled>Vælg taghældning</option>
+                        <option selected disabled value="">Vælg taghældning</option>
                         <option value="15">15 grader</option>
                         <option value="20">20 grader</option>
                         <option value="25">25 grader</option>
@@ -139,7 +140,7 @@
                 <div class="form-box" id="redskabsrum1">
                     <label for="redskabsrum_bredde" >Redskabsrum bredde*</label>
                     <select name="redskabsrum_bredde" id="redskabsrum_bredde" required>
-                        <option selected disabled>Vælg bredde</option>
+                        <option selected disabled value="">Vælg bredde</option>
                         <option value="210">210 cm</option>
                         <option value="240">240 cm</option>
                         <option value="270">270 cm</option>
@@ -162,7 +163,7 @@
                 <div class="form-box" id="redskabsrum2">
                     <label for="redskabsrum_længde">Redskabsrum bredde*</label>
                     <select name="redskabsrum_længde" id="redskabsrum_længde" required>
-                        <option selected disabled>Vælg længde</option>
+                        <option selected disabled value="">Vælg længde</option>
                         <option value="150">150 cm</option>
                         <option value="180">180 cm</option>
                         <option value="210">210 cm</option>
@@ -200,7 +201,7 @@
 
 <div class="footer"></div>
 
-<script src="../public/javascript/FormsScript.js"></script>
+<script src="../public/javascript/FormsScript.js" th:src="@{/javascript/FormsScript.js}"></script>
 
 </body>
 </html>

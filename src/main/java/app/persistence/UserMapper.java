@@ -87,25 +87,22 @@ public class UserMapper {
 
     public static void insertContactInformation(User user, ConnectionPool connectionPool) throws DatabaseException {
         //Insert into contact table with information
-        String contactSQL = "INSERT INTO contact (name,address,city,postal_code,phone_number,email) VALUES (?,?,?,?,?,?) WHERE user_id = ?";
+        String contactSQL = "INSERT INTO contact (user_id,name,address,city,postal_code,phone_number,email) VALUES (?,?,?,?,?,?,?)";
 
         try (
                 Connection connection = connectionPool.getConnection();
                 PreparedStatement ps = connection.prepareStatement(contactSQL)
         ) {
-            ps.setString(1, user.getContactInformation().getName());
-            ps.setString(2, user.getContactInformation().getAddress());
-            ps.setString(3, user.getContactInformation().getCity());
-            ps.setInt(4, user.getContactInformation().getPostal_code());
-            ps.setInt(5, user.getContactInformation().getPhone_number());
-            ps.setString(6, user.getContactInformation().getEmail());
+            ps.setInt(1, user.getUser_id());
+            ps.setString(2, user.getContactInformation().getName());
+            ps.setString(3, user.getContactInformation().getAddress());
+            ps.setString(4, user.getContactInformation().getCity());
+            ps.setInt(5, user.getContactInformation().getPostal_code());
+            ps.setInt(6, user.getContactInformation().getPhone_number());
+            ps.setString(7, user.getContactInformation().getEmail());
 
-            ps.setInt(7, user.getUser_id());
 
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1) {
-                throw new DatabaseException("Fejl ved oprettelse af ny kontakt information");
-            }
+            ps.executeUpdate();
         } catch (SQLException e) {
             String msg = "Der er sket en fejl. Prøv igen";
             if (e.getMessage().startsWith("ERROR: duplicate key value ")) {
@@ -131,10 +128,7 @@ public class UserMapper {
 
             ps.setInt(7, user.getUser_id());
 
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected != 1) {
-                throw new DatabaseException("Fejl ved opdatering af ny kontakt information");
-            }
+            ps.executeUpdate();
         } catch (SQLException e) {
             String msg = "Der er sket en fejl. Prøv igen";
             throw new DatabaseException(msg, e.getMessage());
