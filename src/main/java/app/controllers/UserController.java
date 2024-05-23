@@ -16,16 +16,8 @@ import java.util.ArrayList;
 public class UserController {
     public static void addRoutes(Javalin app, ConnectionPool connectionPool) {
         app.post("login", ctx -> login(ctx, connectionPool));
-        app.get("login", ctx -> {
-            String redirectUrl = ctx.req().getHeader("Referer");
-            ctx.sessionAttribute("redirectUrl", redirectUrl);
-            ctx.render("loginpage.html");
-        });
-        app.post("loginpage", ctx -> {
-            String redirectUrl = ctx.req().getHeader("Referer");
-            ctx.sessionAttribute("redirectUrl", redirectUrl);
-            ctx.render("loginpage.html");
-        });
+        app.get("login", ctx -> redirectPage(ctx));
+        app.post("loginpage", ctx -> redirectPage(ctx));
         app.get("logout", ctx -> logout(ctx));
         app.post("logout", ctx -> logout(ctx));
         app.get("signup", ctx -> ctx.render("signup.html"));
@@ -60,6 +52,11 @@ public class UserController {
         }
     }
 
+    public static void redirectPage(Context ctx) {
+        String redirectUrl = ctx.req().getHeader("Referer");
+        ctx.sessionAttribute("redirectUrl", redirectUrl);
+        ctx.render("loginpage.html");
+    }
 
     public static void login(Context ctx, ConnectionPool connectionPool) {
         // Hent form parametre
