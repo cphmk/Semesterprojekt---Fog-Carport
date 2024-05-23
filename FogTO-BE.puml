@@ -1,5 +1,7 @@
 @startuml
 
+skinparam wrapWidth 100
+
 |Kunde|
 if (Valg af type carport?) then (Custom)
 

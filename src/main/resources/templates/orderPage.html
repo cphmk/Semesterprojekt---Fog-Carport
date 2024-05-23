@@ -47,7 +47,7 @@
                 <img src="item1.jpg" alt="Carport 1">
                 <div class="item-details">
                     <h3 class="item-name">Carport med <span th:text="${order.comment}">Carport navn</span> </h3>
-                    <p class="item-price" th:text="'$' + ${order.price}"></p>
+                    <p class="item-price" th:text="${order.price} + ' kr'">0.00 kr</p>
                 </div>
                 <button th:if="${order.status=='PendingFog'}" type="submit" class="button remove-button"
                         name="order_id" th:value="${order.order_id}"
@@ -68,9 +68,6 @@
                         name="order_id" th:value="${order.order_id}"
                         formaction="viewOrder">View order details
                 </button>
-
-            </div>
-            <div class="total-price">
 
             </div>
             <div class="buttons">
