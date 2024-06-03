@@ -39,7 +39,7 @@ public class AdminController {
     }
 
     public static void deleteOrder(Context ctx, ConnectionPool connectionPool) {
-        int orderID = Integer.parseInt(ctx.formParam("orderID"));
+        int orderID = Integer.parseInt(ctx.formParam("order_id"));
 
         try {
             OrderMapper.deleteOrderItem(orderID, connectionPool);
