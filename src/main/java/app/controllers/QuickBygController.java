@@ -189,6 +189,7 @@ public class QuickBygController {
 
         ctx.sessionAttribute("currentUser", user);
         ctx.render("QuickBygFinish.html");
+        ctx.sessionAttribute("Carport", null);
     }
 
 }
